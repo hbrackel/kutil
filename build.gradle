@@ -54,7 +54,7 @@ publishing {
     }
     repositories {
         maven {
-            url "http://127.0.0.1:8081/artifactory/libs-release"
+            url "http://127.0.0.1:8081/artifactory/libs-release-local"
             credentials {
                 // in ~/.gradle/gradle.properties
                 username artifactoryDeployUser
