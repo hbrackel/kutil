@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        maven {
+            url "http://127.0.0.1:8081/artifactory/plugins-release"
+        }
+    }
+    dependencies {
+        classpath group: "de.macnix.gradle", name: "buildinfo", version: "1.0.3"
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'de.macnix.buildinfo'
+apply plugin: 'maven-publish'
+
+group 'de.macnix.util'
+version '1.0.0'
+
+repositories {
+    maven {
+        url "http://127.0.0.1:8081/artifactory/libs-release"
+    }
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4'
+}
+
+buildInfo {
+    version = project.version
+    buildDate = new Date()
+    vendor = "Dipl.-Ing. Hans-Uwe Brackel (macnix.de)"
+}
+
+jar.dependsOn createBuildInfoFile
+jar.dependsOn addBuildInfoToManifest
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom.withXml {
+                asNode().appendNode('licenses')
+                        .appendNode('license')
+                        .appendNode("name", "Apache License, Version 2.0")
+                        .parent().appendNode("url", "https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        .parent().appendNode("distribution", "repo")
+            }
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "http://127.0.0.1:8081/artifactory/libs-release"
+            credentials {
+                // in ~/.gradle/gradle.properties
+                username artifactoryDeployUser
+                password artifactoryDeployPassword
+            }
+        }
+    }
+}
+
+
