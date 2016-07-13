@@ -27,7 +27,7 @@ class Configuration<T> {
     T configuration
     final Class<T> configurationClass
 
-    Configuration(File configurationFile, Class<T>configurationClass) {
+    Configuration(File configurationFile, Class<T> configurationClass) {
         this.configurationFile = configurationFile
         this.configurationClass = configurationClass
     }
@@ -38,7 +38,13 @@ class Configuration<T> {
             log.info("#loadConfiguration(): Configuration file {} not found.", configurationFile.getCanonicalPath())
             try {
                 Files.createDirectories(new File(configurationFile.getParent()).toPath())
-                this.configuration = readConfiguration(getClass().getResourceAsStream("/configuration/" + configurationFile.getName()))
+                InputStream ios = getClass().getResourceAsStream(defaultConfigurationFilename)
+                if (ios == null) {
+                    def errMsg = "Default configuration file ${defaultConfigurationFilename} not found."
+                    log.error(errMsg)
+                    throw new ConfigurationException(errMsg)
+                }
+                this.configuration = readConfiguration(ios)
                 writeConfiguration()
             } catch (IOException e) {
                 log.info("#loadConfiguration(): Cannot create configuration file {} ({}).", configurationFile.getCanonicalPath(), e.getMessage())
@@ -65,6 +71,10 @@ class Configuration<T> {
         log.debug("#writeConfiguration(): Writing configuration file {}.", configurationFile.getCanonicalPath())
         ObjectMapper mapper = new ObjectMapper()
         mapper.writeValue(configurationFile, configuration)
+    }
+
+    String getDefaultConfigurationFilename() {
+        "/configuration/" + configurationFile.getName()
     }
 
 

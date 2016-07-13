@@ -8,6 +8,8 @@ class ConfigurationSpec extends Specification {
     static String configurationFileName = "build/testConfiguration/application_configuration.json"
     File configurationFile = new File(configurationFileName)
 
+    File nonExistingConfigurationFile = new File("build/testConfiguration/non_existing_application_configuration.json")
+
     def setup() {
         deleteTestFiles()
     }
@@ -26,6 +28,18 @@ class ConfigurationSpec extends Specification {
         configurationFile.exists()
         applicationConfiguration.numberOfParameters == 2
         applicationConfiguration.theStringParameter == "I'm a String parameter"
+    }
+
+    def "throw ConfigurationException if default config file in jar does not exist"() {
+        when:
+        Configuration<ApplicationConfiguration> appConfig = new Configuration<>(nonExistingConfigurationFile, ApplicationConfiguration.class)
+        ApplicationConfiguration applicationConfiguration = appConfig.loadConfiguration()
+
+        then:
+        ConfigurationException ce = thrown(ConfigurationException)
+        ce.message == 'Default configuration file ' + appConfig.defaultConfigurationFilename + ' not found.'
+        applicationConfiguration == null
+        !nonExistingConfigurationFile.exists()
     }
 
     def deleteTestFiles() {
