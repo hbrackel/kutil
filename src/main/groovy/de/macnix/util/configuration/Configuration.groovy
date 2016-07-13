@@ -18,7 +18,8 @@ package de.macnix.util.configuration
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.util.logging.Slf4j
-import org.apache.commons.io.FileUtils
+
+import java.nio.file.Files
 
 @Slf4j
 class Configuration<T> {
@@ -36,13 +37,13 @@ class Configuration<T> {
         if (!configurationFile.exists()) {
             log.info("#loadConfiguration(): Configuration file {} not found.", configurationFile.getCanonicalPath())
             try {
-                FileUtils.forceMkdir(new File(configurationFile.getParent()))
+                Files.createDirectories(new File(configurationFile.getParent()).toPath())
                 this.configuration = readConfiguration(getClass().getResourceAsStream("/configuration/" + configurationFile.getName()))
                 writeConfiguration()
             } catch (IOException e) {
                 log.info("#loadConfiguration(): Cannot create configuration file {} ({}).", configurationFile.getCanonicalPath(), e.getMessage())
                 try {
-                    FileUtils.forceDelete(configurationFile)
+                    Files.deleteIfExists(configurationFile.toPath())
                 } catch (IOException ignored) {
                     log.warn("#loadConfiguration(): Cannot delete configuration file {}.", configurationFile.getCanonicalPath())
                 }
