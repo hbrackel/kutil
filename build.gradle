@@ -1,8 +1,8 @@
 buildscript {
+    apply from: "${rootDir}/repos.gradle"
+
     repositories {
-        maven {
-            url "http://127.0.0.1:8081/artifactory/plugins-release"
-        }
+        maven { url pluginsRepoUrl }
     }
     dependencies {
         classpath group: "de.macnix.gradle", name: "buildinfo", version: "1.0.3"
@@ -17,9 +17,7 @@ group 'de.macnix.util'
 version '1.0.2'
 
 repositories {
-    maven {
-        url "http://127.0.0.1:8081/artifactory/libs-release"
-    }
+    maven { url libsRepoUrl }
 }
 
 dependencies {
@@ -56,11 +54,11 @@ publishing {
     }
     repositories {
         maven {
-            url "http://127.0.0.1:8081/artifactory/libs-release-local"
+            url libsReleaseLocalRepoUrl
             credentials {
                 // in ~/.gradle/gradle.properties
-                username artifactoryDeployUser
-                password artifactoryDeployPassword
+                username deployUser
+                password deployPassword
             }
         }
     }

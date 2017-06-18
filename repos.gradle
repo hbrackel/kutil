@@ -1,0 +1,12 @@
+def libsReleaseRepo = System.getenv("REPO_LIBS_RELEASE")
+def pluginsReleaseRepo = System.getenv("REPO_PLUGINS_RELEASE")
+def libsReleaseLocalRepo = System.getenv("REPO_LIBS_RELEASE_LOCAL")
+def pluginsReleaseLocalRepo = System.getenv("REPO_PLUGINS_RELEASE_LOCAL")
+
+ext.deployUser =  System.getenv("DEPLOY_USER") ?: nexusDeployUser   // from ~/.gradle/gradle.properties
+ext.deployPassword = System.getenv("DEPLOY_PASSWORD") ?: nexusDeployPassword
+
+ext.libsRepoUrl = libsReleaseRepo ?: "http://127.0.0.1:8081/repository/libs-release"
+ext.pluginsRepoUrl = pluginsReleaseRepo ?: "http://127.0.0.1:8081/repository/plugins-release"
+ext.libsReleaseLocalRepoUrl = libsReleaseLocalRepo ?: "http://127.0.0.1:8081/repository/libs-release-local"
+ext.pluginsReleaseLocalRepoUrl = pluginsReleaseLocalRepo ?: "http://127.0.0.1:8081/repository/plugins-release-local"
