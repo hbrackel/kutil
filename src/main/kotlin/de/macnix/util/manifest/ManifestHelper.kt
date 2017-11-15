@@ -20,7 +20,7 @@ import java.io.IOException
 import java.net.URL
 import java.util.jar.Manifest
 
-class ManifestHelper {
+class ManifestHelper private constructor() {
     companion object {
 
         /**
