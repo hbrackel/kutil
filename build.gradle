@@ -1,15 +1,19 @@
 buildscript {
+    ext.kotlin_version = '1.1.60'
+
     apply from: "${rootDir}/repos.gradle"
 
     repositories {
         maven { url pluginsRepoUrl }
     }
     dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath group: "de.macnix.gradle", name: "buildinfo", version: "1.0.3"
     }
 }
 
 apply plugin: 'groovy'
+apply plugin: 'kotlin'
 apply plugin: 'de.macnix.buildinfo'
 apply plugin: 'maven-publish'
 
@@ -21,9 +25,15 @@ repositories {
 }
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
     compile 'org.codehaus.groovy:groovy-all:2.4.7'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.5'
+
+    // Kotlin
+    testCompile "org.jetbrains.kotlin:kotlin-reflect"
+    testCompile "org.jetbrains.kotlin:kotlin-test"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit"
 
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4'
