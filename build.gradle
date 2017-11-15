@@ -25,15 +25,15 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
     compile 'org.codehaus.groovy:groovy-all:2.4.7'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.5'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
 
     // Kotlin
     testCompile "org.jetbrains.kotlin:kotlin-reflect"
     testCompile "org.jetbrains.kotlin:kotlin-test"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit"
 
-    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4'
 }
 
