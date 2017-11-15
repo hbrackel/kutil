@@ -30,9 +30,9 @@ class ManifestHelper private constructor() {
         @Throws(IOException::class)
         fun <T> getManifestForClass(aClass: Class<T>): Manifest? {
             val className = aClass.simpleName + ".class"
-            val classPath = aClass.getResource(className).toString()
+            val classPath = aClass.getResource(className)?.toString()
 
-            if (classPath.startsWith("jar")) {
+            if (classPath != null && classPath.startsWith("jar")) {
                 val manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) + "/META-INF/MANIFEST.MF"
                 return Manifest(URL(manifestPath).openStream())
             } else {
