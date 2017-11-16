@@ -20,8 +20,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.InputStream
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.*
 import java.util.jar.Attributes
 import java.util.jar.Manifest
@@ -39,7 +40,7 @@ data class BuildInfo(
         private val log: Logger = LoggerFactory.getLogger(BuildInfo::class.java)
 
         val DEFAULT_BUILDINFO_FILENPATH = "/buildinfo.properties"
-        val DEFAULT_DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ssZ"
+        val DEFAULT_DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss"
         internal val propertyNames = arrayOf("version", "buildNumber", "buildDate", "vendor", "name", "applicationName")
 
         private fun fromMap(properties: Map<String, String>): BuildInfo {
@@ -109,13 +110,16 @@ data class BuildInfo(
         }
     }
 
-    fun getBuildDate(dateFormat: String = DEFAULT_DATEFORMAT): Date? {
+    fun getBuildDate(dateFormat: String = DEFAULT_DATEFORMAT): LocalDateTime? {
         if (buildDate == null) return null
         return try {
-            val sdf = SimpleDateFormat(dateFormat)
-            sdf.parse(this.buildDate)
-        } catch (ignored: ParseException) {
-            null
+            LocalDateTime.parse(this.buildDate, DateTimeFormatter.ofPattern(dateFormat))
+        } catch (iae: IllegalArgumentException) {
+            log.error("Invalid DateFormat pattern ({})", iae.message)
+            throw iae
+        } catch (dtpe: DateTimeParseException) {
+            log.error("BuildDate string '{}' could not be parsed with pattern '{}'", buildDate, dateFormat)
+            throw dtpe
         }
     }
 
