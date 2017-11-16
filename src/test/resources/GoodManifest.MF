@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: Hans-Uwe Brackel
+Specification-Title: My Application
+Implementation-Title: test-library
+Implementation-Vendor: macnix.de
+Implementation-Version: 1.3
+Implementation-Build-Date: 2017-11-15 19:14:34
+Implementation-Build-Number: 123
+Built-By: the builder
