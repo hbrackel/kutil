@@ -21,6 +21,9 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import java.io.File
+import java.time.LocalDateTime
+import java.time.Month
+import java.time.format.DateTimeParseException
 import java.util.*
 import java.util.jar.Manifest
 
@@ -151,6 +154,108 @@ object BuildInfoSpec : Spek({
                     assertThat(ep["Manifest-Version"], equalTo("1.0"))
                     assertThat(ep["Created-By"], equalTo("Hans-Uwe Brackel"))
                     assertThat(ep["Built-By"], equalTo("the builder"))
+                }
+            }
+        }
+
+        given("a buildinfo with version and buildNumber") {
+            val version = "5.6.7"
+            val buildNo = "321"
+            val buildInfo = BuildInfo("myName", "appName", version, buildNo, null, null, emptyMap())
+
+            on("getVersionWithBuild()") {
+                val versionWithBuild = buildInfo.getVersionWithBuild()
+
+                it("should return a string contatenation of the version and the buildNumber") {
+                    assertThat(versionWithBuild, equalTo("$version-$buildNo"))
+                }
+            }
+        }
+
+        given("a buildinfo with version and no buildNumber") {
+            val version = "5.6.7"
+            val buildNo = null
+            val buildInfo = BuildInfo("myName", "appName", version, buildNo, null, null, emptyMap())
+
+            on("getVersionWithBuild()") {
+                val versionWithBuild = buildInfo.getVersionWithBuild()
+
+                it("should return the version string") {
+                    assertThat(versionWithBuild, equalTo(version))
+                }
+            }
+        }
+
+        given("a buildinfo with a buildDate string in standard format") {
+            val buildDateString = "2017-11-12T12:13:14"
+            val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
+
+            on("getBuildDate()") {
+                val buildDate = buildInfo.getBuildDate()
+                val expectedDateTime = LocalDateTime.of(2017, Month.NOVEMBER, 12, 12, 13, 14)
+
+                it("should return the correct date instance") {
+                    assertThat(buildDate, equalTo(expectedDateTime))
+                }
+            }
+        }
+
+        given("a buildinfo with no buildDate") {
+            val buildInfo = BuildInfo("myName", null, "1.2.3", null, null, null, emptyMap())
+
+            on("getBuildDate()") {
+                val buildDate = buildInfo.getBuildDate()
+
+                it("should return null") {
+                    assertThat(buildDate, nullValue())
+                }
+            }
+        }
+
+        given("a buildinfo with a buildDate string in standard format and an invalid format pattern") {
+            val buildDateString = "2017-11-12T12:13:14"
+            val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
+
+            on("getBuildDate(<invalid-format-pattern>)") {
+                val exception = try {
+                    buildInfo.getBuildDate("abc'xx'-1")
+                } catch (e: Exception) {
+                    e
+                }
+                it("should throw an IllegalArgumentException") {
+                    assertThat(exception, instanceOf(IllegalArgumentException::class.java))
+                }
+            }
+        }
+
+        given("a buildinfo with a buildDate string in standard format and not matching format pattern") {
+            val buildDateString = "2017-11-16T12:13:14"
+            val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
+
+            on("getBuildDate(<not-matching-pattern>)") {
+                val exception = try {
+                    buildInfo.getBuildDate("yyyy-dd-mm")
+                } catch (e: Exception) {
+                    e
+                }
+                it("should throw an DateTimeParseException") {
+                    assertThat(exception, instanceOf(DateTimeParseException::class.java))
+                }
+            }
+        }
+
+        given("a buildinfo with an invalid buildDate string") {
+            val buildDateString = "abc 123"
+            val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
+
+            on("getBuildDate()") {
+                val exception = try {
+                    buildInfo.getBuildDate()
+                } catch (e: Exception) {
+                    e
+                }
+                it("should throw an DateTimeParseException") {
+                    assertThat(exception, instanceOf(DateTimeParseException::class.java))
                 }
             }
         }
