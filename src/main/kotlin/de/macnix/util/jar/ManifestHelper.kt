@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.macnix.util.manifest
+package de.macnix.util.jar
 
 import java.io.IOException
 import java.net.URL
