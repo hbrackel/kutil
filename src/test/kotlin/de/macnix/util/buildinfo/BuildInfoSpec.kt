@@ -26,8 +26,6 @@ import java.util.jar.Manifest
 
 
 object BuildInfoSpec : Spek({
-    val defaultPropertiesFilename = BuildInfo.DEFAULT_BUILDINFO_FILENPATH
-    val anotherPropertiesFilename = "/buildinfo2.properties"
 
     fun assertEqualsStandardBuildInfoProperties(buildInfo: BuildInfo, properties: Properties) {
         assertThat(buildInfo.name, equalTo(properties["name"]))

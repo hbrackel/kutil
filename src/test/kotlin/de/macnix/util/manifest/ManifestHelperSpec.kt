@@ -26,7 +26,6 @@ import org.jetbrains.spek.api.dsl.on
 
 object ManifestHelperSpec : Spek({
     describe("a ManifestHelper") {
-        val manifestHelper: ManifestHelper
 
         given("a class from a jar") {
             val clazz = Spek::class.java
