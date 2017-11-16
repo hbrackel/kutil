@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Hans-Uwe Brackel
+ * Copyright (c) 2017 Hans-Uwe Brackel
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,4 @@
 
 package de.macnix.util.configuration
 
-class ConfigurationException extends Exception {
-    ConfigurationException(String message) {
-        super(message)
-    }
-}
+class ConfigurationException(message: String) : Exception(message)
