@@ -56,7 +56,7 @@ data class BuildInfo(
         fun fromPath(propertiesFilePath: String = DEFAULT_BUILDINFO_FILENPATH): BuildInfo {
             val propertiesFileStream = BuildInfo::class.java.getResourceAsStream((propertiesFilePath))
             if (propertiesFileStream == null) {
-                log.error("Properties file does not exist")
+                log.error("Properties file '$propertiesFilePath' does not exist")
                 throw BuildInfoException("Properties file '$propertiesFilePath' does not exist")
             }
             val props = Properties()
@@ -65,7 +65,10 @@ data class BuildInfo(
         }
 
         fun fromFile(propertiesFile: File): BuildInfo {
-            if (!propertiesFile.exists()) throw BuildInfoException("Properties file '$propertiesFile' does not exist")
+            if (!propertiesFile.exists()) {
+                log.error("Properties file '$propertiesFile' does not exist")
+                throw BuildInfoException("Properties file '$propertiesFile' does not exist")
+            }
             val props = Properties()
             props.load(propertiesFile.inputStream())
             return fromMap(props.map { (key, value) -> Pair<String, String>(key.toString(), value.toString()) }.toMap())
