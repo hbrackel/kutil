@@ -144,7 +144,7 @@ object BuildInfoSpec : Spek({
                     assertThat(buildInfo.vendor, equalTo("macnix.de"))
                 }
 
-                it("should have captured all non-standard properties in the 'extraProperties") {
+                it("should capture all non-standard properties in the 'extraProperties'") {
                     val ep = buildInfo.extraProperties
 
                     assertThat(buildInfo.extraProperties.size, equalTo(3))
