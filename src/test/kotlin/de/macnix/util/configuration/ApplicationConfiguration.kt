@@ -16,4 +16,8 @@
 
 package de.macnix.util.configuration
 
-data class ApplicationConfiguration(var numberOfParameters: Int, var theStringParameter: String)
+class ApplicationConfiguration {
+    var numberOfParameters: Int? = null
+    var theStringParameter: String? = null
+
+}
