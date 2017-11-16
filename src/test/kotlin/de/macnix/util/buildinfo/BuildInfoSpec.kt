@@ -190,8 +190,8 @@ object BuildInfoSpec : Spek({
             val buildDateString = "2017-11-12T12:13:14"
             val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
 
-            on("getBuildDate()") {
-                val buildDate = buildInfo.getBuildDate()
+            on("getBuildDateAsLocalDateTime()") {
+                val buildDate = buildInfo.getBuildDateAsLocalDateTime()
                 val expectedDateTime = LocalDateTime.of(2017, Month.NOVEMBER, 12, 12, 13, 14)
 
                 it("should return the correct date instance") {
@@ -203,8 +203,8 @@ object BuildInfoSpec : Spek({
         given("a buildinfo with no buildDate") {
             val buildInfo = BuildInfo("myName", null, "1.2.3", null, null, null, emptyMap())
 
-            on("getBuildDate()") {
-                val buildDate = buildInfo.getBuildDate()
+            on("getBuildDateAsLocalDateTime()") {
+                val buildDate = buildInfo.getBuildDateAsLocalDateTime()
 
                 it("should return null") {
                     assertThat(buildDate, nullValue())
@@ -216,9 +216,9 @@ object BuildInfoSpec : Spek({
             val buildDateString = "2017-11-12T12:13:14"
             val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
 
-            on("getBuildDate(<invalid-format-pattern>)") {
+            on("getBuildDateAsLocalDateTime(<invalid-format-pattern>)") {
                 val exception = try {
-                    buildInfo.getBuildDate("abc'xx'-1")
+                    buildInfo.getBuildDateAsLocalDateTime("abc'xx'-1")
                 } catch (e: Exception) {
                     e
                 }
@@ -232,9 +232,9 @@ object BuildInfoSpec : Spek({
             val buildDateString = "2017-11-16T12:13:14"
             val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
 
-            on("getBuildDate(<not-matching-pattern>)") {
+            on("getBuildDateAsLocalDateTime(<not-matching-pattern>)") {
                 val exception = try {
-                    buildInfo.getBuildDate("yyyy-dd-mm")
+                    buildInfo.getBuildDateAsLocalDateTime("yyyy-dd-mm")
                 } catch (e: Exception) {
                     e
                 }
@@ -248,9 +248,9 @@ object BuildInfoSpec : Spek({
             val buildDateString = "abc 123"
             val buildInfo = BuildInfo("myName", null, "1.2.3", null, buildDateString, null, emptyMap())
 
-            on("getBuildDate()") {
+            on("getBuildDateAsLocalDateTime()") {
                 val exception = try {
-                    buildInfo.getBuildDate()
+                    buildInfo.getBuildDateAsLocalDateTime()
                 } catch (e: Exception) {
                     e
                 }

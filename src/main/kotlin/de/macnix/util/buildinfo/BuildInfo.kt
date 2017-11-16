@@ -110,7 +110,7 @@ data class BuildInfo(
         }
     }
 
-    fun getBuildDate(dateFormat: String = DEFAULT_DATEFORMAT): LocalDateTime? {
+    fun getBuildDateAsLocalDateTime(dateFormat: String = DEFAULT_DATEFORMAT): LocalDateTime? {
         if (buildDate == null) return null
         return try {
             LocalDateTime.parse(this.buildDate, DateTimeFormatter.ofPattern(dateFormat))
