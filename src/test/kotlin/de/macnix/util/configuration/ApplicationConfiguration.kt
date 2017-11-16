@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Hans-Uwe Brackel
+ * Copyright (c) 2017 Hans-Uwe Brackel
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,7 +16,4 @@
 
 package de.macnix.util.configuration
 
-class ApplicationConfiguration {
-    int numberOfParameters
-    String theStringParameter
-}
+data class ApplicationConfiguration(var numberOfParameters: Int, var theStringParameter: String)
