@@ -36,7 +36,7 @@ pipeline {
 
     stage('Assemble Distribution') {
       steps {
-        sh './gradlew assemble generatePomFileForMavenJavaPublication'
+        sh './gradlew assemble generatePomFileForMavenPublication'
         archiveArtifacts artifacts: 'build/libs/*.jar, build/publications/**/*pom*.xml', onlyIfSuccessful: true
       }
     }
