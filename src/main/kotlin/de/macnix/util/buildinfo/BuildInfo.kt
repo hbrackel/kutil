@@ -123,5 +123,10 @@ data class BuildInfo(
         }
     }
 
+    fun getBuildDateAsLocalDateTimeOrElse(dateFormat: String = DEFAULT_DATEFORMAT, defaultLocalDateTime: LocalDateTime): LocalDateTime {
+        val ldt = getBuildDateAsLocalDateTime(dateFormat)
+        return if (ldt != null) ldt else defaultLocalDateTime
+    }
+
 
 }
