@@ -23,6 +23,7 @@ import org.jetbrains.spek.api.dsl.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.Month
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.*
 import java.util.jar.Manifest
@@ -218,7 +219,7 @@ object BuildInfoSpec : Spek({
 
             on("getBuildDateAsLocalDateTime(<invalid-format-pattern>)") {
                 val exception = try {
-                    buildInfo.getBuildDateAsLocalDateTime("abc'xx'-1")
+                    buildInfo.getBuildDateAsLocalDateTime(DateTimeFormatter.ofPattern("abc-xxx1"))
                 } catch (e: Exception) {
                     e
                 }
@@ -234,7 +235,7 @@ object BuildInfoSpec : Spek({
 
             on("getBuildDateAsLocalDateTime(<not-matching-pattern>)") {
                 val exception = try {
-                    buildInfo.getBuildDateAsLocalDateTime("yyyy-dd-mm")
+                    buildInfo.getBuildDateAsLocalDateTime(DateTimeFormatter.ofPattern("yyyy-dd-mm"))
                 } catch (e: Exception) {
                     e
                 }

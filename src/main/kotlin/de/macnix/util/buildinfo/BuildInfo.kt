@@ -110,21 +110,21 @@ data class BuildInfo(
         }
     }
 
-    fun getBuildDateAsLocalDateTime(dateFormat: String = DEFAULT_DATEFORMAT): LocalDateTime? {
+    fun getBuildDateAsLocalDateTime(formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME): LocalDateTime? {
         if (buildDate == null) return null
         return try {
-            LocalDateTime.parse(this.buildDate, DateTimeFormatter.ofPattern(dateFormat))
+            LocalDateTime.parse(this.buildDate, formatter)
         } catch (iae: IllegalArgumentException) {
             log.error("Invalid DateFormat pattern ({})", iae.message)
             throw iae
         } catch (dtpe: DateTimeParseException) {
-            log.error("BuildDate string '{}' could not be parsed with pattern '{}'", buildDate, dateFormat)
+            log.error("BuildDate string '{}' could not be parsed with formatter '{}'", buildDate, formatter)
             throw dtpe
         }
     }
 
-    fun getBuildDateAsLocalDateTimeOrElse(dateFormat: String = DEFAULT_DATEFORMAT, defaultLocalDateTime: LocalDateTime): LocalDateTime {
-        val ldt = getBuildDateAsLocalDateTime(dateFormat)
+    fun getBuildDateAsLocalDateTimeOrElse(formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME, defaultLocalDateTime: LocalDateTime): LocalDateTime {
+        val ldt = getBuildDateAsLocalDateTime(formatter)
         return if (ldt != null) ldt else defaultLocalDateTime
     }
 
