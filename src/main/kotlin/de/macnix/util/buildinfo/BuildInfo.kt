@@ -132,5 +132,16 @@ data class BuildInfo(
         return if (ldt != null) ldt else defaultLocalDateTime
     }
 
+    fun toProperties() {
+        val properties = Properties()
+        properties.setProperty("name", name)
+        if (applicationName != null) properties.set("applicationName", applicationName)
+        properties.setProperty("version", version)
+        if (buildNumber != null) properties.setProperty("buildNumber", buildNumber)
+        if (buildDate != null) properties.setProperty("buildDate", buildDate)
+        if (vendor != null) properties.setProperty("vendor", vendor)
+        properties.putAll(extraProperties)
+    }
+
 
 }
