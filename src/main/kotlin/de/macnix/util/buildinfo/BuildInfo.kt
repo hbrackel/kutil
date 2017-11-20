@@ -62,7 +62,11 @@ data class BuildInfo(
             }
             val props = Properties()
             props.load(propertiesFileStream)
-            return fromMap(props.map { (key, value) -> Pair(key.toString(), value.toString()) }.toMap())
+            return fromProperties(props)
+        }
+
+        fun fromProperties(properties: Properties): BuildInfo {
+            return fromMap(properties.map { (key, value) -> Pair(key.toString(), value.toString()) }.toMap())
         }
 
         fun fromFile(propertiesFile: File): BuildInfo {
@@ -72,13 +76,13 @@ data class BuildInfo(
             }
             val props = Properties()
             props.load(propertiesFile.inputStream())
-            return fromMap(props.map { (key, value) -> Pair<String, String>(key.toString(), value.toString()) }.toMap())
+            return fromProperties(props)
         }
 
         fun fromStream(inputStream: InputStream): BuildInfo {
             val props = Properties()
             props.load(inputStream)
-            return fromMap(props.map { (key, value) -> Pair<String, String>(key.toString(), value.toString()) }.toMap())
+            return fromProperties(props)
         }
 
         fun fromManifest(manifest: Manifest): BuildInfo {
