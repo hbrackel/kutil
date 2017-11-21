@@ -331,6 +331,27 @@ object BuildInfoSpec : Spek({
                 }
             }
 
+            given("a BuildInfo instance") {
+                val buildInfo = BuildInfo("TheName", "TheApplicationName", "1.2.3", "93", "2017-11-23", "TheVendor",
+                        mapOf((Pair("anExtraProperty", "TheExtraValue"))))
+                on("toProperties()") {
+                    val buildInfoProperties = buildInfo.toProperties()
+
+                    it("should return a Properties instance") {
+                        assertThat(buildInfoProperties, instanceOf(Properties::class.java))
+                    }
+                    it("should contain all buildInfo attributes in the properties") {
+                        assertThat(buildInfoProperties.getProperty("name"), equalTo("TheName"))
+                        assertThat(buildInfoProperties.getProperty("applicationName"), equalTo("TheApplicationName"))
+                        assertThat(buildInfoProperties.getProperty("version"), equalTo("1.2.3"))
+                        assertThat(buildInfoProperties.getProperty("buildNumber"), equalTo("93"))
+                        assertThat(buildInfoProperties.getProperty("buildDate"), equalTo("2017-11-23"))
+                        assertThat(buildInfoProperties.getProperty("vendor"), equalTo("TheVendor"))
+                        assertThat(buildInfoProperties.getProperty("anExtraProperty"), equalTo("TheExtraValue"))
+                        assertThat(buildInfoProperties.keys.size, equalTo(7))
+                    }
+                }
+            }
 
         }
     }
