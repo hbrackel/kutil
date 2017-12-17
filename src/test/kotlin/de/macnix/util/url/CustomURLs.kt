@@ -16,7 +16,6 @@
 
 package de.macnix.util.url
 
-import de.macnix.ua.commons.url.URLStreamHandlerFactoryManager
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll

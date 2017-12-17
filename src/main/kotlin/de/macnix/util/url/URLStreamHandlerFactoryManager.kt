@@ -1,4 +1,4 @@
-package de.macnix.ua.commons.url
+package de.macnix.util.url
 
 import java.net.URL
 

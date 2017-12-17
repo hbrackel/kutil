@@ -1,4 +1,4 @@
-package de.macnix.ua.commons.url
+package de.macnix.util.url
 
 import de.macnix.ua.commons.url.protocols.opctcp.OpcTcpStreamHandler
 import de.macnix.ua.commons.url.protocols.ssh.SshStreamHandler
