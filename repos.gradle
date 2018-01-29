@@ -1,12 +1,8 @@
-def libsReleaseRepo = System.getenv("REPO_LIBS_RELEASE")
-def pluginsReleaseRepo = System.getenv("REPO_PLUGINS_RELEASE")
-def libsReleaseLocalRepo = System.getenv("REPO_LIBS_RELEASE_LOCAL")
-def pluginsReleaseLocalRepo = System.getenv("REPO_PLUGINS_RELEASE_LOCAL")
+ext.deployUser = System.getenv("MAVEN_DEPLOY_USR") ?: project.findProperty('mavenDeployUser') ?: ""  // from ~/.gradle/gradle.properties
+ext.deployPassword = System.getenv("MAVEN_DEPLOY_PSW") ?: project.findProperty('mavenDeployPassword') ?: ""
 
-ext.deployUser =  System.getenv("MAVEN_DEPLOY_USR") ?: artifactoryDeployUser   // from ~/.gradle/gradle.properties
-ext.deployPassword = System.getenv("MAVEN_DEPLOY_PSW") ?: artifactoryDeployPassword
+ext.libsReleaseRepoUrl = System.getenv("REPO_LIBS_RELEASE") ?: project.findProperty('libsReleaseRepoDefaultUrl') ?: ""
+ext.libsReleaseLocalRepoUrl = System.getenv("REPO_LIBS_RELEASE_LOCAL") ?: project.findProperty('libsReleaseLocalRepoDefaultUrl') ?: ""
 
-ext.libsRepoUrl = libsReleaseRepo ?: "http://192.168.255.212:8081/artifactory/libs-release"
-ext.pluginsRepoUrl = pluginsReleaseRepo ?: "http://192.168.255.212:8081/artifactory/plugins-release"
-ext.libsReleaseLocalRepoUrl = libsReleaseLocalRepo ?: "http://192.168.255.212:8081/artifactory/libs-release-local"
-ext.pluginsReleaseLocalRepoUrl = pluginsReleaseLocalRepo ?: "http://192.168.255.212:8081/artifactory/plugins-release-local"
+ext.pluginsReleaseRepoUrl = System.getenv("REPO_PLUGINS_RELEASE") ?: project.findProperty('pluginsReleaseRepoDefaultUrl') ?: ""
+ext.pluginsReleaseLocalRepoUrl = System.getenv("REPO_PLUGINS_RELEASE_LOCAL") ?: project.findProperty('pluginsReleaseLocalRepoDefaultUrl') ?: ""
