@@ -1,0 +1,35 @@
+// kotlin
+ext.kotlinVersion = "1.2.50"
+
+// logging
+ext.slf4jApiVersion = "1.7.25"
+ext.logbackClassicVersion = "1.2.3"
+
+//# vertx
+ext.vertxVersion = "3.5.1"
+
+ext.jacksonVersion = "2.9.5"
+ext.jacksonCsvVersion = "2.9.5"
+ext.apacheCommonsCsvVersion = "1.5"
+
+//# test environment
+ext.junitPlatformVersion = "1.0.2"
+ext.junitJupiterVersion = "5.0.2"
+ext.cucumberVersion = "1.2.5"
+ext.mockitoVersion = "2.13.0"
+ext.spekVersion = "1.1.5"
+ext.hamcrestAllVersion = "1.3"
+ext.awaitilityVersion = "1.7.0"
+
+//# spock framework related
+ext.byteBuddyVersion = "1.8.12"
+ext.objenesisVersion = "2.6"
+ext.spockCoreVersion = "1.1-groovy-2.4"
+
+// DI
+ext.springVersion = "5.0.2.RELEASE"
+
+ext {
+    uomConverterVersion = "0.1+"
+}
+

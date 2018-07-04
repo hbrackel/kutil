@@ -15,8 +15,9 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.2.41'
-    ext.junit_version = '5.0.2'
+    apply from: 'versions.gradle'
+
+    ext { kotlinVersion = '1.2.50' }
 
     apply from: "${rootDir}/repos.gradle"
 
@@ -25,21 +26,21 @@ buildscript {
         maven { url pluginsReleaseRepoUrl }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.2'
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6"
 
     }
 }
 
-apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
-apply plugin: 'org.junit.platform.gradle.plugin'
+apply from: 'kotlin.gradle'
+apply from: 'testEnvironment.gradle'
 apply plugin: 'org.sonarqube'
+apply from: 'gitVersion.gradle'
+apply plugin: 'maven-publish'
 
 
 group 'de.macnix.util'
-apply from: "$rootDir/gitVersion.gradle"
 
 repositories {
     maven { url libsReleaseRepoUrl }
@@ -49,40 +50,6 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
     compile group: 'io.projectreactor', name: 'reactor-core', version: '3.1.2.RELEASE'
-
-    // Kotlin
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
-    // Testing
-    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:$junit_version"
-    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
-    testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-    testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: '1.7.0'
-
-    // Kotlin Spek
-    testCompile ('org.jetbrains.spek:spek-api:1.1.5') {
-        exclude group: 'org.jetbrains.kotlin'
-    }
-    testRuntime ('org.jetbrains.spek:spek-junit-platform-engine:1.1.5') {
-        exclude group: 'org.junit.platform'
-        exclude group: 'org.jetbrains.kotlin'
-    }
-}
-
-
-junitPlatform {
-    // https://github.com/junit-team/junit5/issues/700
-    // otherwise jacoco will not be executed
-    enableStandardTestTask = true
-
-    reportsDir = file("$buildDir/test-results/test")
-    filters {
-        engines {
-            include 'spek'
-        }
-    }
 }
 
 //afterEvaluate {
