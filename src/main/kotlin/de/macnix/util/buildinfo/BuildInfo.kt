@@ -54,6 +54,7 @@ data class BuildInfo(
             return (BuildInfo(name, properties["applicationName"], version, properties["buildNumber"], properties["buildDate"], properties["vendor"], extraProperties))
         }
 
+        @JvmStatic
         fun fromPath(propertiesFilePath: String = DEFAULT_BUILDINFO_FILENPATH): BuildInfo {
             val propertiesFileStream = BuildInfo::class.java.getResourceAsStream((propertiesFilePath))
             if (propertiesFileStream == null) {
@@ -65,10 +66,12 @@ data class BuildInfo(
             return fromProperties(props)
         }
 
+        @JvmStatic
         fun fromProperties(properties: Properties): BuildInfo {
             return fromMap(properties.map { (key, value) -> Pair(key.toString(), value.toString()) }.toMap())
         }
 
+        @JvmStatic
         fun fromFile(propertiesFile: File): BuildInfo {
             if (!propertiesFile.exists()) {
                 log.error("Properties file '$propertiesFile' does not exist")
@@ -79,12 +82,14 @@ data class BuildInfo(
             return fromProperties(props)
         }
 
+        @JvmStatic
         fun fromStream(inputStream: InputStream): BuildInfo {
             val props = Properties()
             props.load(inputStream)
             return fromProperties(props)
         }
 
+        @JvmStatic
         fun fromManifest(manifest: Manifest): BuildInfo {
             val map = manifest.mainAttributes
                     .filter { (_, value) -> value != null }
