@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.macnix.util.`class`
+package de.macnix.util
 
 import java.io.File
 import java.net.MalformedURLException
