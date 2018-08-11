@@ -17,7 +17,7 @@
 buildscript {
     apply from: 'versions.gradle'
 
-    ext { kotlinVersion = '1.2.50' }
+    ext { kotlinVersion = '1.2.60' }
 
     apply from: "${rootDir}/repos.gradle"
 
