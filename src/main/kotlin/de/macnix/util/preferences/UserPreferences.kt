@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory
 import java.util.prefs.BackingStoreException
 import java.util.prefs.Preferences
 
-//TODO use kotlin Delegate
 class UserPreferences(clazz: Class<*>) {
     companion object {
         private val log: Logger = LoggerFactory.getLogger(UserPreferences::class.java)
