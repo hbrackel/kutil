@@ -38,6 +38,7 @@ apply from: 'testEnvironment.gradle'
 apply plugin: 'org.sonarqube'
 apply from: 'gitVersion.gradle'
 apply plugin: 'maven-publish'
+apply plugin: "org.sonarqube"
 
 
 group 'de.macnix.util'
