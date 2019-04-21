@@ -1,6 +1,0 @@
-def version = System.getenv("VERSION") ?: "0.0"
-def build = System.getenv("BUILD") ?: "0"
-def patch = System.getenv("PATCH") ?: ""
-def ci_build_number = System.getenv("BUILD_COUNTER") ?: "SNAPSHOT"
-
-project.version = "$version.$build-$ci_build_number"

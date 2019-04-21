@@ -15,85 +15,64 @@
  */
 
 buildscript {
-    apply from: 'versions.gradle'
-
-    ext { kotlinVersion = '1.2.60' }
-
-    apply from: "${rootDir}/repos.gradle"
+    apply from: "$rootDir/versions.gradle"
+    apply from: "$rootDir/repos.gradle"
 
     repositories {
         maven { url libsReleaseRepoUrl }
         maven { url pluginsReleaseRepoUrl }
     }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.2'
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6"
-
-    }
 }
 
-apply from: 'kotlin.gradle'
-apply from: 'testEnvironment.gradle'
-apply plugin: 'org.sonarqube'
-apply from: 'gitVersion.gradle'
-apply plugin: 'maven-publish'
-apply plugin: "org.sonarqube"
-
-
-group 'de.macnix.util'
+plugins {
+    id "java-library"  // needed to make dependencies 'implementation' etc be resolved
+    id "org.jetbrains.kotlin.jvm" version "1.3.30" apply false
+    id "org.sonarqube" version "2.7"
+    id "maven-publish"
+    id "de.macnix.gitversion" version "1.0.1"
+}
 
 repositories {
     maven { url libsReleaseRepoUrl }
 }
 
-dependencies {
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
-    compile group: 'io.projectreactor', name: 'reactor-core', version: '3.1.2.RELEASE'
-}
+apply from: "kotlin.gradle"
+apply from: "testEnvironment.gradle"
 
-//afterEvaluate {
-//    jacoco {
-//        toolVersion = "0.7.9"
-//        applyTo junitPlatformTest
-//    }
-//
-//    task junitCodeCoverageReport(type:JacocoReport) {
-//        executionData junitPlatformTest
-//        sourceSets sourceSets.main
-//        sourceDirectories = files(project.sourceSets.main.allSource.srcDirs)
-//        classDirectories = files(project.sourceSets.main.output)
-//        reports {
-//            xml.enabled = true
-//            csv.enabled = false
-//            html.enabled = true
-//            html.destination file("${buildDir}/jacocoHtml")
-//        }
-//    }
-//
-//}
+group = "de.macnix.util"
+
+dependencies {
+    implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.2")
+    implementation("io.projectreactor:reactor-core:3.1.2.RELEASE")
+}
 
 publishing {
     publications {
-        maven(MavenPublication) {
-            pom.withXml {
-                asNode().appendNode('licenses')
-                        .appendNode('license')
-                        .appendNode("name", "Apache License, Version 2.0")
-                        .parent().appendNode("url", "https://www.apache.org/licenses/LICENSE-2.0.txt")
-                        .parent().appendNode("distribution", "repo")
+        mavenJava(MavenPublication) {
+            pom {
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "hbrackel"
+                        name = "Hans-Uwe Brackel"
+                        email = "hbrackel@googlemail.com"
+                    }
+                }
             }
-
-            from components.java
         }
     }
     repositories {
         maven {
-            url libsReleaseLocalRepoUrl
+            url = libsReleaseLocalRepoUrl
             credentials {
-                username deployUser
-                password deployPassword
+                username = deployUser
+                password = deployPassword
             }
         }
     }

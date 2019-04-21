@@ -1,12 +1,8 @@
-apply plugin: 'org.junit.platform.gradle.plugin'
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 dependencies {
-    testCompile "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: hamcrestAllVersion
-    testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: logbackClassicVersion
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: "$awaitilityVersion"
-
 
 
     testCompile("org.jetbrains.spek:spek-api:$spekVersion") {
@@ -16,17 +12,30 @@ dependencies {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
+
+
+    testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.assertj:assertj-core:$assertjVersion")
+
+    testCompile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.2'
+    testRuntime group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
+    testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.2'
+
 }
 
-junitPlatform {
-    // https://github.com/junit-team/junit5/issues/700
-    // otherwise jacoco will not be executed
-    enableStandardTestTask = true
 
-    reportsDir = file("$buildDir/test-results/test")
-    filters {
-        engines {
-            include 'spek', 'jupiter'
+test {
+    useJUnitPlatform {
+//        reportsDir  "$buildDir/test-results/test"
+        includeEngines 'spek', 'jupiter'
+        testLogging {
+            events(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
         }
     }
 }
