@@ -1,13 +1,3 @@
-buildscript {
-    apply from: "$rootDir/versions.gradle"
-    apply from: "$rootDir/repos.gradle"
-
-    repositories {
-        maven { url libsReleaseRepoUrl }
-        maven { url pluginsReleaseRepoUrl }
-    }
-}
-
 plugins {
     id "java-library"  // needed to make dependencies 'implementation' etc be resolved
     id "org.jetbrains.kotlin.jvm" version "1.3.30" apply false
@@ -15,6 +5,10 @@ plugins {
     id "maven-publish"
     id "de.macnix.gitversion" version "1.0.3"
 }
+
+apply from: "$rootDir/versions.gradle"
+apply from: "$rootDir/repos.gradle"
+apply from: "$rootDir/versionFile.gradle.kts"
 
 repositories {
     maven { url libsReleaseRepoUrl }
