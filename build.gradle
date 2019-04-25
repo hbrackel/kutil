@@ -7,7 +7,7 @@ plugins {
 }
 
 apply from: "$rootDir/versions.gradle"
-apply from: "$rootDir/repos.gradle"
+apply from: "$rootDir/repos.gradle.kts"
 apply from: "$rootDir/versionFile.gradle.kts"
 
 repositories {
