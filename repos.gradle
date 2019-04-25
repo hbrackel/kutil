@@ -1,8 +1,0 @@
-ext.deployUser = System.getenv("MAVEN_DEPLOY_USR") ?: project.findProperty('mavenDeployUser') ?: ""  // from ~/.gradle/gradle.properties
-ext.deployPassword = System.getenv("MAVEN_DEPLOY_PSW") ?: project.findProperty('mavenDeployPassword') ?: ""
-
-ext.libsReleaseRepoUrl = System.getenv("REPO_LIBS_RELEASE") ?: project.findProperty('libsReleaseRepoDefaultUrl') ?: ""
-ext.libsReleaseLocalRepoUrl = System.getenv("REPO_LIBS_RELEASE_LOCAL") ?: project.findProperty('libsReleaseLocalRepoDefaultUrl') ?: ""
-
-ext.pluginsReleaseRepoUrl = System.getenv("REPO_PLUGINS_RELEASE") ?: project.findProperty('pluginsReleaseRepoDefaultUrl') ?: ""
-ext.pluginsReleaseLocalRepoUrl = System.getenv("REPO_PLUGINS_RELEASE_LOCAL") ?: project.findProperty('pluginsReleaseLocalRepoDefaultUrl') ?: ""
