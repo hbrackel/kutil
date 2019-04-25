@@ -29,6 +29,7 @@ dependencies {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            from components.java
             pom {
                 licenses {
                     license {
