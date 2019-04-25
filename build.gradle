@@ -11,6 +11,7 @@ apply from: "$rootDir/repos.gradle.kts"
 apply from: "$rootDir/versionFile.gradle.kts"
 
 repositories {
+    maven { url upstreamRepoUrl }
     maven { url libsReleaseRepoUrl }
 }
 
