@@ -16,8 +16,7 @@
 
 package de.macnix.util.buildinfo
 
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import java.io.File
@@ -32,18 +31,18 @@ import java.util.jar.Manifest
 object BuildInfoSpec : Spek({
 
     fun assertEqualsStandardBuildInfoProperties(buildInfo: BuildInfo, properties: Properties) {
-        assertThat(buildInfo.name, equalTo(properties["name"]))
-        assertThat(buildInfo.version, equalTo(properties["version"]))
-        assertThat(buildInfo.buildNumber, equalTo(properties["buildNumber"]))
-        assertThat(buildInfo.applicationName, equalTo(properties["applicationName"]))
-        assertThat(buildInfo.buildDate, equalTo(properties["buildDate"]))
-        assertThat(buildInfo.vendor, equalTo(properties["vendor"]))
+        assertThat(buildInfo.name).isEqualTo(properties["name"])
+        assertThat(buildInfo.version).isEqualTo(properties["version"])
+        assertThat(buildInfo.buildNumber).isEqualTo(properties["buildNumber"])
+        assertThat(buildInfo.applicationName).isEqualTo(properties["applicationName"])
+        assertThat(buildInfo.buildDate).isEqualTo(properties["buildDate"])
+        assertThat(buildInfo.vendor).isEqualTo(properties["vendor"])
     }
 
     fun assertEqualsExtraProperties(buildInfo: BuildInfo, properties: Properties) {
         properties.filter { (key, _) -> !BuildInfo.propertyNames.contains(key) }
                 .forEach { (key, _) ->
-                    assertThat(buildInfo.extraProperties[key], equalTo(properties[key]))
+                    assertThat(buildInfo.extraProperties[key]).isEqualTo(properties[key])
                 }
     }
 
@@ -58,7 +57,7 @@ object BuildInfoSpec : Spek({
                 val buildInfo = BuildInfo.fromPath()
 
                 it("should return a BuildInfo instance") {
-                    assertThat(buildInfo, notNullValue())
+                    assertThat(buildInfo).isNotNull
                 }
 
                 it("should contain all standard BuildInfo properties") {
@@ -79,7 +78,7 @@ object BuildInfoSpec : Spek({
                 val buildInfo = BuildInfo.fromPath(locationPath)
 
                 it("should return a BuildInfo instance") {
-                    assertThat(buildInfo, notNullValue())
+                    assertThat(buildInfo).isNotNull
                 }
 
                 it("should contain all standard BuildInfo properties") {
@@ -97,7 +96,7 @@ object BuildInfoSpec : Spek({
                 val buildInfo = BuildInfo.fromFile(buildInfoFile)
 
                 it("should return a BuildInfo instance") {
-                    assertThat(buildInfo, notNullValue())
+                    assertThat(buildInfo).isNotNull
                 }
 
                 it("should contain all standard BuildInfo properties") {
@@ -115,7 +114,7 @@ object BuildInfoSpec : Spek({
                 val buildInfo = BuildInfo.fromStream(buildInfoStream)
 
                 it("should return a BuildInfo instance") {
-                    assertThat(buildInfo, notNullValue())
+                    assertThat(buildInfo).isNotNull()
                 }
 
                 it("should contain all standard BuildInfo properties") {
@@ -137,24 +136,24 @@ object BuildInfoSpec : Spek({
                 val buildInfo = BuildInfo.fromManifest(goodManifest)
 
                 it("should return a BuildInfo instance") {
-                    assertThat(buildInfo, notNullValue())
+                    assertThat(buildInfo).isNotNull
                 }
                 it("should contain all standard BuildInfo properties") {
-                    assertThat(buildInfo.name, equalTo("test-library"))
-                    assertThat(buildInfo.version, equalTo("1.3"))
-                    assertThat(buildInfo.buildNumber, equalTo("123"))
-                    assertThat(buildInfo.applicationName, equalTo("My Application"))
-                    assertThat(buildInfo.buildDate, equalTo("2017-11-15 19:14:34"))
-                    assertThat(buildInfo.vendor, equalTo("macnix.de"))
+                    assertThat(buildInfo.name).isEqualTo("test-library")
+                    assertThat(buildInfo.version).isEqualTo("1.3")
+                    assertThat(buildInfo.buildNumber).isEqualTo("123")
+                    assertThat(buildInfo.applicationName).isEqualTo("My Application")
+                    assertThat(buildInfo.buildDate).isEqualTo("2017-11-15 19:14:34")
+                    assertThat(buildInfo.vendor).isEqualTo("macnix.de")
                 }
 
                 it("should capture all non-standard properties in the 'extraProperties'") {
                     val ep = buildInfo.extraProperties
 
-                    assertThat(buildInfo.extraProperties.size, equalTo(3))
-                    assertThat(ep["Manifest-Version"], equalTo("1.0"))
-                    assertThat(ep["Created-By"], equalTo("Hans-Uwe Brackel"))
-                    assertThat(ep["Built-By"], equalTo("the builder"))
+                    assertThat(buildInfo.extraProperties.size).isEqualTo(3)
+                    assertThat(ep["Manifest-Version"]).isEqualTo("1.0")
+                    assertThat(ep["Created-By"]).isEqualTo("Hans-Uwe Brackel")
+                    assertThat(ep["Built-By"]).isEqualTo("the builder")
                 }
             }
         }
@@ -168,7 +167,7 @@ object BuildInfoSpec : Spek({
                 val versionWithBuild = buildInfo.getVersionWithBuild()
 
                 it("should return a string contatenation of the version and the buildNumber") {
-                    assertThat(versionWithBuild, equalTo("$version-$buildNo"))
+                    assertThat(versionWithBuild).isEqualTo("$version-$buildNo")
                 }
             }
         }
@@ -182,7 +181,7 @@ object BuildInfoSpec : Spek({
                 val versionWithBuild = buildInfo.getVersionWithBuild()
 
                 it("should return the version string") {
-                    assertThat(versionWithBuild, equalTo(version))
+                    assertThat(versionWithBuild).isEqualTo(version)
                 }
             }
         }
@@ -196,7 +195,7 @@ object BuildInfoSpec : Spek({
                 val expectedDateTime = LocalDateTime.of(2017, Month.NOVEMBER, 12, 12, 13, 14)
 
                 it("should return the correct date instance") {
-                    assertThat(buildDate, equalTo(expectedDateTime))
+                    assertThat(buildDate).isEqualTo(expectedDateTime)
                 }
             }
         }
@@ -208,7 +207,7 @@ object BuildInfoSpec : Spek({
                 val buildDate = buildInfo.getBuildDateAsLocalDateTime()
 
                 it("should return null") {
-                    assertThat(buildDate, nullValue())
+                    assertThat(buildDate).isNull()
                 }
             }
         }
@@ -224,7 +223,7 @@ object BuildInfoSpec : Spek({
                     e
                 }
                 it("should throw an IllegalArgumentException") {
-                    assertThat(exception, instanceOf(IllegalArgumentException::class.java))
+                    assertThat(exception).isInstanceOf(IllegalArgumentException::class.java)
                 }
             }
         }
@@ -240,7 +239,7 @@ object BuildInfoSpec : Spek({
                     e
                 }
                 it("should throw an DateTimeParseException") {
-                    assertThat(exception, instanceOf(DateTimeParseException::class.java))
+                    assertThat(exception).isInstanceOf(DateTimeParseException::class.java)
                 }
             }
         }
@@ -256,7 +255,7 @@ object BuildInfoSpec : Spek({
                     e
                 }
                 it("should throw an DateTimeParseException") {
-                    assertThat(exception, instanceOf(DateTimeParseException::class.java))
+                    assertThat(exception).isInstanceOf(DateTimeParseException::class.java)
                 }
             }
         }
@@ -273,8 +272,8 @@ object BuildInfoSpec : Spek({
                         e
                     }
                     it("should throw a BuildInfoException") {
-                        assertThat(exception, instanceOf(BuildInfo.BuildInfoException::class.java))
-                        assertThat(exception?.message, startsWith("Properties do not contain values for mandatory keys 'name' or 'version'"))
+                        assertThat(exception).isInstanceOf(BuildInfo.BuildInfoException::class.java)
+                        assertThat(exception?.message).startsWith("Properties do not contain values for mandatory keys 'name' or 'version'")
                     }
                 }
             }
@@ -290,8 +289,8 @@ object BuildInfoSpec : Spek({
                         e
                     }
                     it("should throw a BuildInfoException") {
-                        assertThat(exception, instanceOf(BuildInfo.BuildInfoException::class.java))
-                        assertThat(exception?.message, startsWith("Properties do not contain values for mandatory keys 'name' or 'version'"))
+                        assertThat(exception).isInstanceOf(BuildInfo.BuildInfoException::class.java)
+                        assertThat(exception?.message).startsWith("Properties do not contain values for mandatory keys 'name' or 'version'")
                     }
                 }
             }
@@ -307,8 +306,8 @@ object BuildInfoSpec : Spek({
                         e
                     }
                     it("should throw a BuildInfoException") {
-                        assertThat(exception, instanceOf(BuildInfo.BuildInfoException::class.java))
-                        assertThat(exception?.message, equalTo("Properties file '$propertiesFilePath' does not exist"))
+                        assertThat(exception).isInstanceOf(BuildInfo.BuildInfoException::class.java)
+                        assertThat(exception).hasMessage("Properties file '$propertiesFilePath' does not exist")
                     }
                 }
             }
@@ -325,8 +324,8 @@ object BuildInfoSpec : Spek({
                         e
                     }
                     it("should throw a BuildInfoException") {
-                        assertThat(exception, instanceOf(BuildInfo.BuildInfoException::class.java))
-                        assertThat(exception?.message, equalTo("Properties file '$file' does not exist"))
+                        assertThat(exception).isInstanceOf(BuildInfo.BuildInfoException::class.java)
+                        assertThat(exception).hasMessage("Properties file '$file' does not exist")
                     }
                 }
             }
@@ -338,17 +337,17 @@ object BuildInfoSpec : Spek({
                     val buildInfoProperties = buildInfo.toProperties()
 
                     it("should return a Properties instance") {
-                        assertThat(buildInfoProperties, instanceOf(Properties::class.java))
+                        assertThat(buildInfoProperties).isInstanceOf(Properties::class.java)
                     }
                     it("should contain all buildInfo attributes in the properties") {
-                        assertThat(buildInfoProperties.getProperty("name"), equalTo("TheName"))
-                        assertThat(buildInfoProperties.getProperty("applicationName"), equalTo("TheApplicationName"))
-                        assertThat(buildInfoProperties.getProperty("version"), equalTo("1.2.3"))
-                        assertThat(buildInfoProperties.getProperty("buildNumber"), equalTo("93"))
-                        assertThat(buildInfoProperties.getProperty("buildDate"), equalTo("2017-11-23"))
-                        assertThat(buildInfoProperties.getProperty("vendor"), equalTo("TheVendor"))
-                        assertThat(buildInfoProperties.getProperty("anExtraProperty"), equalTo("TheExtraValue"))
-                        assertThat(buildInfoProperties.keys.size, equalTo(7))
+                        assertThat(buildInfoProperties.getProperty("name")).isEqualTo("TheName")
+                        assertThat(buildInfoProperties.getProperty("applicationName")).isEqualTo("TheApplicationName")
+                        assertThat(buildInfoProperties.getProperty("version")).isEqualTo("1.2.3")
+                        assertThat(buildInfoProperties.getProperty("buildNumber")).isEqualTo("93")
+                        assertThat(buildInfoProperties.getProperty("buildDate")).isEqualTo("2017-11-23")
+                        assertThat(buildInfoProperties.getProperty("vendor")).isEqualTo("TheVendor")
+                        assertThat(buildInfoProperties.getProperty("anExtraProperty")).isEqualTo("TheExtraValue")
+                        assertThat(buildInfoProperties.keys.size).isEqualTo(7)
                     }
                 }
             }
