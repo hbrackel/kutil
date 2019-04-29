@@ -16,8 +16,7 @@
 
 package de.macnix.util.configuration
 
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
@@ -50,12 +49,12 @@ object ConfigurationSpec : Spek({
                     val configuration = appConfig.loadConfiguration()
 
                     it("should read the default configuration from the jar resources path") {
-                        assertThat(configuration, notNullValue())
-                        assertThat(configuration?.numberOfParameters, equalTo(2))
-                        assertThat(configuration?.theStringParameter, equalTo("I'm a String parameter"))
+                        assertThat(configuration).isNotNull
+                        assertThat(configuration?.numberOfParameters).isEqualTo(2)
+                        assertThat(configuration?.theStringParameter).isEqualTo("I'm a String parameter")
                     }
                     it("should save a copy of the default configuration file in the configured path") {
-                        assertThat(configurationFile.exists(), equalTo(true))
+                        assertThat(configurationFile.exists()).isTrue()
                     }
                 }
             }
@@ -71,8 +70,8 @@ object ConfigurationSpec : Spek({
                         e
                     }
                     it("should throw a ConfigurationException") {
-                        assertThat(exception, instanceOf(ConfigurationException::class.java))
-                        assertThat(exception?.message, equalTo("Default configuration file ${appConfig.defaultConfigurationFilename} not found."))
+                        assertThat(exception).isInstanceOf(ConfigurationException::class.java)
+                        assertThat(exception).hasMessage("Default configuration file ${appConfig.defaultConfigurationFilename} not found.")
                     }
                 }
             }
