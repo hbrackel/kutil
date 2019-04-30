@@ -41,7 +41,7 @@ data class BuildInfo(
 
         val DEFAULT_BUILDINFO_FILENPATH = "/buildinfo.properties"
         val DEFAULT_DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss"
-        internal val propertyNames = arrayOf("version", "buildNumber", "buildDate", "vendor", "name", "applicationName")
+        val propertyNames = arrayOf("version", "buildNumber", "buildDate", "vendor", "name", "applicationName")
 
         private fun fromMap(properties: Map<String, String>): BuildInfo {
             val name = properties["name"]
