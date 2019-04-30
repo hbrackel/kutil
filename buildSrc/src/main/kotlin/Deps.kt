@@ -16,36 +16,24 @@
 
 object Deps {
 
-    // dependencies
-
     // kotlin
     val kotlinVersion = "1.3.31"
-    val log4jVersion = "2.11.2"
 
     // logging
-    val slf4jApiVersion = "1.7.25"
-    val logbackClassicVersion = "1.2.3"
+    val slf4jApiVersion = "1.7.26"
+    val log4jVersion = "2.11.2"
 
     //# vertx
-    val vertxVersion = "3.5.1"
+    val vertxVersion = "3.7.0"
 
-    val jacksonVersion = "2.9.5"
-    val jacksonCsvVersion = "2.9.5"
-    val apacheCommonsCsvVersion = "1.5"
+    val jacksonVersion = "2.9.8"
+    val jacksonCsvVersion = "2.9.8"
+    val apacheCommonsCsvVersion = "1.6"
 
     //# test environment
-    val junitPlatformVersion = "1.0.2"
-    val junitJupiterVersion = "5.0.2"
+    val junitJupiterVersion = "5.4.2"
     val cucumberVersion = "1.2.5"
-    val mockitoVersion = "2.13.0"
-    val spekVersion = "1.1.5"
-    val hamcrestAllVersion = "1.3"
     val awaitilityVersion = "1.7.0"
-
-    //# spock framework related
-    val byteBuddyVersion = "1.8.12"
-    val objenesisVersion = "2.6"
-    val spockCoreVersion = "1.1-groovy-2.4"
 
     val mockkVersion = "1.9"
     val assertjVersion = "3.11.1"
