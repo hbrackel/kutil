@@ -17,8 +17,7 @@
 package de.macnix.util.updatable
 
 import com.jayway.awaitility.Awaitility.await
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.contains
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
@@ -26,7 +25,7 @@ import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
-@DisplayName("Given an UpdatableList")
+@DisplayName("An UpdatableList")
 class UpdateableListTests {
     private val log: Logger = LoggerFactory.getLogger(UpdateableListTests::class.java)
 
@@ -47,10 +46,10 @@ class UpdateableListTests {
         ul.updateList(listOf("2"))
 
         await().atMost(5, TimeUnit.SECONDS).until<Boolean> { o.get() == 3 }
-        assertThat(receivedElements, contains(
+        assertThat(receivedElements).contains(
                 Pair("1", UpdatableList.ListChange.ELEMENT_ADDED),
                 Pair("1", UpdatableList.ListChange.ELEMENT_REMOVED),
-                Pair("2", UpdatableList.ListChange.ELEMENT_ADDED)))
+                Pair("2", UpdatableList.ListChange.ELEMENT_ADDED))
     }
 
     @Test
@@ -70,7 +69,7 @@ class UpdateableListTests {
 
         await().atMost(5, TimeUnit.SECONDS).until<Boolean> { o.get() == 3 }
         disposable.dispose()
-        assertThat(receivedElements, contains(Pair("1", UpdatableList.ListChange.ELEMENT_ADDED), Pair("2", UpdatableList.ListChange.ELEMENT_ADDED), Pair("3", UpdatableList.ListChange.ELEMENT_ADDED)))
+        assertThat(receivedElements).contains(Pair("1", UpdatableList.ListChange.ELEMENT_ADDED), Pair("2", UpdatableList.ListChange.ELEMENT_ADDED), Pair("3", UpdatableList.ListChange.ELEMENT_ADDED))
     }
 
     @Test
@@ -88,7 +87,7 @@ class UpdateableListTests {
         }
 
         await().atMost(5, TimeUnit.SECONDS).until<Boolean> { o.get() >= 3 }
-        assertThat(receivedElements, contains(Pair("1", UpdatableList.ListChange.ELEMENT_ADDED), Pair("2", UpdatableList.ListChange.ELEMENT_ADDED), Pair("3", UpdatableList.ListChange.ELEMENT_ADDED)))
+        assertThat(receivedElements).contains(Pair("1", UpdatableList.ListChange.ELEMENT_ADDED), Pair("2", UpdatableList.ListChange.ELEMENT_ADDED), Pair("3", UpdatableList.ListChange.ELEMENT_ADDED))
     }
 
     @Test
@@ -110,9 +109,9 @@ class UpdateableListTests {
         ul.updateList(listOf("2", "3", "4"))
 
         await().atMost(5, TimeUnit.SECONDS).until<Boolean> { counter.get() == 2 }
-        assertThat(receivedElements, contains(
+        assertThat(receivedElements).contains(
                 Pair("1", UpdatableList.ListChange.ELEMENT_REMOVED),
-                Pair("4", UpdatableList.ListChange.ELEMENT_ADDED)))
+                Pair("4", UpdatableList.ListChange.ELEMENT_ADDED))
     }
 
 

@@ -16,9 +16,7 @@
 
 package de.macnix.util.url
 
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
 import java.net.MalformedURLException
@@ -26,15 +24,8 @@ import java.net.URL
 
 
 class CustomURLs {
-    companion object {
-        @JvmStatic @BeforeAll
-        fun beforeAll() {
-            URLStreamHandlerFactoryManager
-        }
-
-        @JvmStatic @AfterAll
-        fun afterAll() {
-        }
+    init {
+        URLStreamHandlerFactoryManager
     }
 
     @Test
