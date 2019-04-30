@@ -1,7 +1,16 @@
+import java.net.URI
+
 plugins {
     `kotlin-dsl`
 }
 
+fun Project.pluginsReleaseRepoUrl(): URI = URI(System.getenv("REPO_PLUGINS_RELEASE")
+        ?: findProperty("pluginsReleaseRepoDefaultUrl") as String ?: "")
+
 repositories {
-    jcenter()   // required to resolve embedded-kotlin compiler; see https://github.com/gradle/kotlin-dsl/issues/1033
+    maven { url = pluginsReleaseRepoUrl() }
+}
+
+dependencies {
+//    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.31")
 }

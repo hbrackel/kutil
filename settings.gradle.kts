@@ -1,3 +1,4 @@
+println("kutil: settings.gradle.kts")
 pluginManagement {
     repositories {
         maven {

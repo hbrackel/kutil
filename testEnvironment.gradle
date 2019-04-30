@@ -1,19 +1,5 @@
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-
 dependencies {
-    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: Deps.hamcrestAllVersion
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: Deps.awaitilityVersion
-
-
-    testCompile("org.jetbrains.spek:spek-api:${Deps.spekVersion}") {
-        exclude group: 'org.jetbrains.kotlin'
-    }
-    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:${Deps.spekVersion}") {
-        exclude group: 'org.junit.platform'
-        exclude group: 'org.jetbrains.kotlin'
-    }
-
-
     testRuntimeOnly("org.jetbrains.kotlin:kotlin-reflect:${Deps.kotlinVersion}")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${Deps.junitJupiterVersion}")
@@ -32,10 +18,8 @@ dependencies {
 
 test {
     useJUnitPlatform {
-//        reportsDir  "$buildDir/test-results/test"
-        includeEngines 'spek', 'jupiter'
         testLogging {
-            events(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
+            events("passed", "skipped", "failed")
         }
     }
 }
