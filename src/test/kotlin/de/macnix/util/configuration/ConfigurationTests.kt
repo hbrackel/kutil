@@ -68,6 +68,7 @@ class ConfigurationTests {
 
                 @Test
                 fun `it should save a copy of the default configuration file in the configured path`() {
+                    appConfig.loadConfiguration()
                     assertThat(configurationFile.exists()).isTrue()
                 }
             }
