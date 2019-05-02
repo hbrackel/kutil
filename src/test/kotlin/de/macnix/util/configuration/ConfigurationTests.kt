@@ -68,7 +68,6 @@ class ConfigurationTests {
 
                 @Test
                 fun `it should save a copy of the default configuration file in the configured path`() {
-                    val configuration = appConfig.loadConfiguration()
                     assertThat(configurationFile.exists()).isTrue()
                 }
             }
@@ -80,8 +79,6 @@ class ConfigurationTests {
 
                 @Test
                 fun `it should throw a ConfigurationException`() {
-                    var exception: Exception? = null
-
                     assertThatExceptionOfType(ConfigurationException::class.java)
                             .isThrownBy({ appConfig.loadConfiguration() })
                             .withMessage("Default configuration file ${appConfig.defaultConfigurationFilename} not found.")
