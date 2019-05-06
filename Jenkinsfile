@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
 
     options {
         skipDefaultCheckout()
@@ -10,15 +10,20 @@ pipeline {
     }
 
   stages {
-
-    stage('Checkout BuildScripts') {
+    stage('Checkout') {
+        agent any
         steps {
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'project']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/util/kutil.git']]])
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'project']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/util/kutil.git']]])
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gradle-build-scripts']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/cicd/gradle-build-scripts.git']]])
+            stash(name: 'ws', includes: 'project/**, gradle-build-files/**', excludes: '**/.git/**')
         }
     }
-    stage('Compile & Unit Test') {
+    stage('Compile & UnitTest') {
+        agent {
+            docker { openjdk:8u212-jdk }
+        }
       steps {
+        unstash 'ws'
         echo 'Build'
         gradlew("clean build")
       }
