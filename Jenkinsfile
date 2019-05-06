@@ -25,7 +25,7 @@ pipeline {
         }
       steps {
         unstash 'ws'
-        gradle("clean build")
+        gradlew("clean build")
         stash(name: 'build', includes: 'project/build/**')
       }
     }
@@ -35,7 +35,7 @@ pipeline {
         steps {
             unstash 'ws'
             unstash 'build'
-            gradle("PublishAllPublicationsToDownstreamRepository")
+            gradlew("PublishAllPublicationsToDownstreamRepository")
             stash(name: 'build', includes: 'project/build/**')
         }
     }
@@ -97,12 +97,12 @@ pipeline {
       }
       steps {
         echo 'Deploy into Production'
-        //sh 'gradle publish'
+        //sh 'gradlew publish'
       }
     }
   }
 }
 
-def gradle(String commands) {
+def gradlew(String commands) {
     sh "cd project && gradle --no-daemon --console=plain ${commands}"
 }
