@@ -21,8 +21,8 @@ pipeline {
     stage('Compile & UnitTest') {
         agent {
             docker {
-                image 'openjdk:8u212-jdk'
-                //args '-v $HOME/.gradle:/root/.gradle'
+                image 'openjdk-gradledir:8u212-jdk'
+                args '-v $HOME/.gradle:/root/.gradle'
             }
         }
         //agent any
