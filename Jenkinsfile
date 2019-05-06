@@ -1,23 +1,24 @@
 pipeline {
-    agent {
-        docker {
-          image 'openjdk:8u151-jdk'
-        }
-    }
+    agent { any }
+
+    options {checkoutToSubdirectory('project') }
 
     environment {
-      MAVEN_DEPLOY = credentials('MAVEN_REPO_DEPLOY_SECRET')
-      SONARQUBE_TOKEN = credentials('SONARQUBE_TOKEN')
-
+      MAVEN_DEPLOY = credentials('MAVEN_DEPLOY_USER')
     }
 
   stages {
-    stage('Compile & Unit Tests') {
+
+    stage('Checkout BuildScripts') {
+        steps {
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gradle-build-scripts']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/cicd/gradle-build-scripts.git']]])
+            sh 'ls -al'
+        }
+    }
+    stage('Compile & Unit Test') {
       steps {
         echo 'Build'
-        sh './gradlew clean classes'
-        sh './gradlew check'
-        junit 'build/test-results/**/*.xml'
+        sh './gradlew clean build'
       }
     }
 
@@ -30,14 +31,14 @@ pipeline {
     stage('Code Analysis') {
       steps {
         echo 'Code Analysis'
-        sh './gradlew sonarqube -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.host.url=${SONARQUBE_URL}'
+        //sh './gradlew sonarqube -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.host.url=${SONARQUBE_URL}'
       }
     }
 
     stage('Assemble Distribution') {
       steps {
-        sh './gradlew assemble generatePomFileForMavenPublication'
-        archiveArtifacts artifacts: 'build/libs/*.jar, build/publications/**/*pom*.xml', onlyIfSuccessful: true
+        //sh './gradlew assemble generatePomFileForMavenPublication'
+        //archiveArtifacts artifacts: 'build/libs/*.jar, build/publications/**/*pom*.xml', onlyIfSuccessful: true
       }
     }
 
@@ -77,8 +78,12 @@ pipeline {
       }
       steps {
         echo 'Deploy into Production'
-        sh './gradlew publish'
+        //sh './gradlew publish'
       }
     }
   }
+}
+
+def gradlew(String commands) {
+    sh "cd project && ./gradlew --no-daemon --console=plain ${commands}"
 }
