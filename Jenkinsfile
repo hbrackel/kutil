@@ -4,7 +4,6 @@ pipeline {
     options {
         skipDefaultCheckout()
     }
-
     environment {
       MAVEN_DEPLOY = credentials('MAVEN_DEPLOY_USER')
     }
@@ -21,16 +20,24 @@ pipeline {
     stage('Compile & UnitTest') {
         agent {
             docker {
-                image 'openjdk-gradledir:8u212-jdk'
-                args '-v $HOME/.gradle:/root/.gradle'
+                image 'gradle:5.4.1-jdk8'
             }
         }
-        //agent any
       steps {
         unstash 'ws'
-        echo 'Build'
-        gradlew("clean build")
+        gradle("clean build")
+        stash(name: 'build', includes: 'project/build/**')
       }
+    }
+
+    stage('Publish to downstream') {
+        agent any
+        steps {
+            unstash 'ws'
+            unstash 'build'
+            gradle("PublishAllPublicationsToDownstreamRepository")
+            stash(name: 'build', includes: 'project/build/**')
+        }
     }
 
     stage('Integration Tests') {
@@ -90,12 +97,12 @@ pipeline {
       }
       steps {
         echo 'Deploy into Production'
-        //sh './gradlew publish'
+        //sh 'gradle publish'
       }
     }
   }
 }
 
-def gradlew(String commands) {
-    sh "cd project && ./gradlew --no-daemon --console=plain ${commands}"
+def gradle(String commands) {
+    sh "cd project && gradle --no-daemon --console=plain ${commands}"
 }
