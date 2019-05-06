@@ -18,7 +18,7 @@ pipeline {
     stage('Compile & Unit Test') {
       steps {
         echo 'Build'
-        sh './gradlew clean build'
+        gradlew("clean build")
       }
     }
 
@@ -37,6 +37,7 @@ pipeline {
 
     stage('Assemble Distribution') {
       steps {
+        echo 'Assemble'
         //sh './gradlew assemble generatePomFileForMavenPublication'
         //archiveArtifacts artifacts: 'build/libs/*.jar, build/publications/**/*pom*.xml', onlyIfSuccessful: true
       }
