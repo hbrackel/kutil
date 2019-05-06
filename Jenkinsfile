@@ -20,7 +20,7 @@ pipeline {
     }
     stage('Compile & UnitTest') {
         agent {
-            docker { openjdk:8u212-jdk }
+            docker { image 'openjdk:8u212-jdk' }
         }
       steps {
         unstash 'ws'
