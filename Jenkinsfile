@@ -27,6 +27,8 @@ pipeline {
         }
         //agent any
       steps {
+        sh 'ping -c 3 nexus'
+        sh 'ping -c 3 192.168.2.5'
         unstash 'ws'
         echo 'Build'
         gradlew("clean build")
