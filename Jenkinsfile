@@ -22,7 +22,7 @@ pipeline {
         agent {
             docker {
                 image 'openjdk:8u212-jdk'
-                args '-v $HOME/.gradle:/root/.gradle'
+                //args '-v $HOME/.gradle:/root/.gradle'
             }
         }
         //agent any
