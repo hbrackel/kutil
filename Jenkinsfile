@@ -1,7 +1,9 @@
 pipeline {
     agent any
 
-    options {checkoutToSubdirectory('project') }
+    options {
+        skipDefaultCheckout=true
+    }
 
     environment {
       MAVEN_DEPLOY = credentials('MAVEN_DEPLOY_USER')
@@ -11,8 +13,8 @@ pipeline {
 
     stage('Checkout BuildScripts') {
         steps {
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'project']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/util/kutil.git']]])
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gradle-build-scripts']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/cicd/gradle-build-scripts.git']]])
-            sh 'ls -al'
         }
     }
     stage('Compile & Unit Test') {
