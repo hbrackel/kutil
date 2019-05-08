@@ -59,19 +59,6 @@ pipeline {
       }
     }
 
-    stage('Assemble Distribution') {
-      steps {
-        echo 'Assemble'
-        //sh './gradlew assemble generatePomFileForMavenPublication'
-        //archiveArtifacts artifacts: 'build/libs/*.jar, build/publications/**/*pom*.xml', onlyIfSuccessful: true
-      }
-    }
-
-    stage('Publish Binaries') {
-      steps {
-        echo 'publish binaries to QA repository'
-      }
-    }
 
     stage('Functional Tests & Performance Tests') {
       parallel {
@@ -97,13 +84,12 @@ pipeline {
         }
     }
 
-    stage('Deploy Binaries') {
+    stage('Publish Library') {
       when {
         branch 'master'
       }
       steps {
-        echo 'Deploy into Production'
-        //sh 'gradlew publish'
+        gradlew('publishAllPublicationsToExternalRepository')
       }
     }
   }
