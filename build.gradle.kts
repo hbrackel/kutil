@@ -1,7 +1,7 @@
 plugins {
     id("kotlin-conventions")
     id("ci-publishing-conventions")
-    id("de.macnix.gitversion") version "1.0.3"
+    id("de.macnix.gitversion") version "1.0.4"
 }
 
 repositories {
