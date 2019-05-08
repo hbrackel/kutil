@@ -85,6 +85,7 @@ pipeline {
     }
 
     stage('Publish Library') {
+      agent {label 'jdk8' }
       when {
         branch 'master'
       }
