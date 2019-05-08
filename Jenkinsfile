@@ -100,5 +100,5 @@ pipeline {
 }
 
 def gradlew(String commands) {
-    sh "cd project && gradle --no-daemon --console=plain --refresh-dependencies ${commands}"
+    sh "cd project && ./gradlew --no-daemon --console=plain --refresh-dependencies ${commands}"
 }
