@@ -24,8 +24,13 @@ pipeline {
             gradlew("clean build")
             stash(name: 'build', includes: 'project/build/**')
          }
+        post {
+            success {
+                archiveArtifacts artifacts: 'project/build/libs/**/*.jar', fingerprint: true
+                junit testResults: 'project/build/reports/**/*.xml', allowEmptyResults: true
+            }
+        }
     }
-
     stage('Publish to downstream') {
         agent {label 'jdk8' }
         steps {
@@ -36,9 +41,7 @@ pipeline {
         }
         post {
             success {
-                archiveArtifacts artifacts: 'project/build/libs/**/*.jar', fingerprint: true
-                zip zipFile: 'downstream_repo.zip', archive: true, dir: 'build/repo'
-                junit testResults: 'project/build/reports/**/*.xml', allowEmptyResults: true
+                zip zipFile: 'downstream_repo.zip', archive: true, dir: 'project/build/repo'
             }
         }
     }
