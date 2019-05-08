@@ -18,7 +18,7 @@ pipeline {
         }
     }
     stage('Compile & UnitTest') {
-        agent any
+        agent {label 'jdk8' }
         steps {
             unstash 'ws'
             gradlew("clean build")
@@ -27,13 +27,20 @@ pipeline {
     }
 
     stage('Publish to downstream') {
-        agent any
+        agent {label 'jdk8' }
         steps {
             unstash 'ws'
             unstash 'build'
             gradlew("PublishAllPublicationsToDownstreamRepository")
             stash(name: 'build', includes: 'project/build/**')
         }
+        post {
+            success {
+                archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+                zip zipFile: 'downstream_repo.zip', archive: true, dir: 'build/repo'
+                junit 'build/reports/**/*.xml'
+            }
+            }
     }
 
     stage('Integration Tests') {
