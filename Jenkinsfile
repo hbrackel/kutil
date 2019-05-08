@@ -41,7 +41,7 @@ pipeline {
         }
         post {
             success {
-                zip zipFile: 'downstream_repo.zip', archive: true, dir: 'project/build/repo'
+                zip zipFile: 'project/build/downstream_repo.zip', archive: true, dir: 'project/build/repo'
             }
         }
     }
