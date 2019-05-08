@@ -18,20 +18,16 @@ pipeline {
         }
     }
     stage('Compile & UnitTest') {
-        agent {
-            docker {
-                image 'gradle:5.4.1-jdk8'
-            }
-        }
-      steps {
-        unstash 'ws'
-        gradlew("clean build")
-        stash(name: 'build', includes: 'project/build/**')
-      }
+        agent { label 'jdk8' }
+        steps {
+            unstash 'ws'
+            gradlew("clean build")
+            stash(name: 'build', includes: 'project/build/**')
+         }
     }
 
     stage('Publish to downstream') {
-        agent any
+        agent { label 'jdk8' }
         steps {
             unstash 'ws'
             unstash 'build'
@@ -104,5 +100,5 @@ pipeline {
 }
 
 def gradlew(String commands) {
-    sh "cd project && gradle --no-daemon --console=plain ${commands}"
+    sh "cd project && gradle --no-daemon --console=plain --refresh-dependencies ${commands}"
 }
