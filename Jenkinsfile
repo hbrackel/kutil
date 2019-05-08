@@ -36,11 +36,11 @@ pipeline {
         }
         post {
             success {
-                archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'project/build/libs/**/*.jar', fingerprint: true
                 zip zipFile: 'downstream_repo.zip', archive: true, dir: 'build/repo'
-                junit 'build/reports/**/*.xml'
+                junit testResults: 'project/build/reports/**/*.xml', allowEmptyResults: true
             }
-            }
+        }
     }
 
     stage('Integration Tests') {
