@@ -18,7 +18,7 @@ pipeline {
         }
     }
     stage('Compile & UnitTest') {
-        agent { label 'jdk8' }
+        agent any
         steps {
             unstash 'ws'
             gradlew("clean build")
@@ -27,7 +27,7 @@ pipeline {
     }
 
     stage('Publish to downstream') {
-        agent { label 'jdk8' }
+        agent any
         steps {
             unstash 'ws'
             unstash 'build'
