@@ -3,6 +3,7 @@ pipeline {
 
     options {
         skipDefaultCheckout()
+        disableConcurrentBuilds()
     }
     environment {
       MAVEN_DEPLOY = credentials('MAVEN_DEPLOY_USER')
