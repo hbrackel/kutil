@@ -42,6 +42,9 @@ pipeline {
         }
         post {
             success {
+                if (fileExists('project/build/downstream_repo.zip')) {
+                    sh "rm project/build/downstream_repo.zip"
+                }
                 zip zipFile: 'project/build/downstream_repo.zip', archive: true, dir: 'project/build/repo'
             }
         }
