@@ -1,7 +1,7 @@
 plugins {
     id("kotlin-conventions")
     id("ci-publishing-conventions")
-    id("de.macnix.gitversion") version "1.0.4"
+    id("de.macnix.gitversion") version "1.0.5"
 }
 
 repositories {
@@ -12,9 +12,9 @@ repositories {
 group = "de.macnix.util"
 
 dependencies {
-    implementation("org.slf4j:slf4j-api:${Deps.slf4jApiVersion}")
-    implementation("com.fasterxml.jackson.core:jackson-databind:${Deps.jacksonVersion}")
-    implementation("io.projectreactor:reactor-core:${Deps.reactorCoreVersion}")
+    implementation("org.slf4j:slf4j-api:${GlobalVersions.slf4jApiVersion}")
+    implementation("com.fasterxml.jackson.core:jackson-databind:${GlobalVersions.jacksonVersion}")
+    implementation("io.projectreactor:reactor-core:${GlobalVersions.reactorCoreVersion}")
 }
 
 publishing {

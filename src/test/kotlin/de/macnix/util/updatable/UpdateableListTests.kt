@@ -16,8 +16,8 @@
 
 package de.macnix.util.updatable
 
-import com.jayway.awaitility.Awaitility.await
 import org.assertj.core.api.Assertions.assertThat
+import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
@@ -45,7 +45,7 @@ class UpdateableListTests {
         ul.updateList(listOf("1"))
         ul.updateList(listOf("2"))
 
-        await().atMost(5, TimeUnit.SECONDS).until<Boolean> { o.get() == 3 }
+        await().atMost(5, TimeUnit.SECONDS).until { o.get() == 3 }
         assertThat(receivedElements).contains(
                 Pair("1", UpdatableList.ListChange.ELEMENT_ADDED),
                 Pair("1", UpdatableList.ListChange.ELEMENT_REMOVED),
@@ -67,7 +67,7 @@ class UpdateableListTests {
         }
         ul.updateList(listOf("1", "2", "3"))
 
-        await().atMost(5, TimeUnit.SECONDS).until<Boolean> { o.get() == 3 }
+        await().atMost(5, TimeUnit.SECONDS).until { o.get() == 3 }
         disposable.dispose()
         assertThat(receivedElements).contains(Pair("1", UpdatableList.ListChange.ELEMENT_ADDED), Pair("2", UpdatableList.ListChange.ELEMENT_ADDED), Pair("3", UpdatableList.ListChange.ELEMENT_ADDED))
     }
@@ -86,7 +86,7 @@ class UpdateableListTests {
             o.incrementAndGet()
         }
 
-        await().atMost(5, TimeUnit.SECONDS).until<Boolean> { o.get() >= 3 }
+        await().atMost(5, TimeUnit.SECONDS).until { o.get() >= 3 }
         assertThat(receivedElements).contains(Pair("1", UpdatableList.ListChange.ELEMENT_ADDED), Pair("2", UpdatableList.ListChange.ELEMENT_ADDED), Pair("3", UpdatableList.ListChange.ELEMENT_ADDED))
     }
 
@@ -103,12 +103,12 @@ class UpdateableListTests {
             receivedElements += item
             counter.incrementAndGet()
         }
-        await().atMost(5, TimeUnit.SECONDS).until<Boolean> { counter.get() == 3 }
+        await().atMost(5, TimeUnit.SECONDS).until { counter.get() == 3 }
         receivedElements.clear()
         counter.set(0)
         ul.updateList(listOf("2", "3", "4"))
 
-        await().atMost(5, TimeUnit.SECONDS).until<Boolean> { counter.get() == 2 }
+        await().atMost(5, TimeUnit.SECONDS).until { counter.get() == 2 }
         assertThat(receivedElements).contains(
                 Pair("1", UpdatableList.ListChange.ELEMENT_REMOVED),
                 Pair("4", UpdatableList.ListChange.ELEMENT_ADDED))
