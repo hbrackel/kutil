@@ -1,7 +1,7 @@
 plugins {
-    id("kotlin-conventions")
+    kotlin("jvm")
     id("ci-publishing-conventions")
-    id("de.macnix.gitversion") version "2.0.0"
+    id("de.macnix.gitversion")
 }
 
 repositories {
@@ -24,6 +24,9 @@ dependencies {
     implementation(libs.bundles.vertx)
 
     testImplementation(libs.jackson.module.kotlin)
+    testImplementation(testLibs.junit.jupiter)
+    testImplementation(testLibs.assertj.core)
+    testImplementation(testLibs.awaitility.kotlin)
 
 }
 
