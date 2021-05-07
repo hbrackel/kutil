@@ -22,6 +22,13 @@ dependencies {
     implementation(libs.jackson.databind)
     implementation(libs.reactor.core)
     implementation(libs.bundles.vertx)
+
+    testImplementation(libs.jackson.module.kotlin)
+
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 publishing {
