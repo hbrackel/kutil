@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(libs.jackson.databind)
     implementation(libs.reactor.core)
+    implementation(libs.bundles.vertx)
 }
 
 publishing {
