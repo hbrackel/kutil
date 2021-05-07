@@ -1,0 +1,66 @@
+[versions]
+
+apache-commons-csv = "1.8"
+arrow = "0.13.2"
+h2-jdbc = "1.4.200"
+h2-r2dbc = "0.8.4.RELEASE"
+inject = "1"
+jackson = "2.12.1"
+kotlin-coroutines = "1.4.3"
+kotlin-lang = "1.4.32"
+log4j2 = "2.14.1"
+reactor-core = "3.4.5"
+reactor-coroutines = "1.1.3"
+slf4j = "1.7.30"
+vertx = "4.0.3"
+spring-version = "5.3.5"
+spring-boot = "2.4.4"
+spring-r2dbc = "1.3.0"
+
+[libraries]
+apache-commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "apache-commons-csv" }
+arrow-core =  { module ="io.arrow-kt:arrow-core", version.ref = "arrow" }
+
+h2-jdbc = { module = "com.h2database:h2", version.ref = "h2-jdbc" }
+h2-r2dbc = { module = "io.r2dbc:r2dbc-h2", version.ref = "h2-r2dbc" }
+
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
+
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-lang" }
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlin-coroutines" }
+
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j2" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j2" }
+log4j-slf4j-impl = { module = "org.apache.logging.log4j:log4j-slf4j-impl", version.ref = "log4j2" }
+
+reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactor-core" }
+reactor-coroutines = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version.ref = "reactor-coroutines" }
+
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+spring-boot-starter-base = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-starter-log4j2 = { module = "org.springframework.boot:spring-boot-starter-log4j2" }
+spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "spring-boot" }
+spring-data-r2dbc = { module = "org.springframework.data:spring-data-r2dbc", version.ref = "spring-r2dbc" }
+
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-version" }
+spring-core = { module = "org.springframework:spring-core", version.ref = "spring-version" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
+
+vertx-core = { module = "io.vertx:vertx-core", version.ref = "vertx" }
+vertx-web-base = { module = "io.vertx:vertx-web", version.ref = "vertx" }
+vertx-web-client = { module = "io.vertx:vertx-web-client", version.ref = "vertx" }
+vertx-jdbc = { module = "io.vertx:vertx-jdbc-client", version.ref = "vertx" }
+
+vertx-kotlin-coroutines = { module = "io.vertx:vertx-lang-kotlin-coroutines", version.ref = "vertx" }
+vertx-kotlin-lang = { module = "io.vertx:vertx-lang-kotlin", version.ref = "vertx" }
+
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+
+[bundles]
+
+vertx = ["vertx-core", "vertx-kotlin-lang", "vertx-kotlin-coroutines"]
+springdi = ["javax-inject", "spring-context", "spring-core", "spring-boot-autoconfigure"]
+reactor-coroutines = ["reactor-core", "reactor-coroutines"]

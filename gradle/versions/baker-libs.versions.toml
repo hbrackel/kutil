@@ -1,0 +1,22 @@
+[versions]
+
+uom-converter = "0.4.12-12"
+kuaclient = "[5.0,)"
+kuaserver = "[4.5.2,)"
+kuacommons = "[5.0,)"
+opcua-clients = "0.0.1"
+prosys-opcua = "4.5.2-1343"
+
+[libraries]
+
+kuaclient = { module = "com.bakerhughes.ua:kuaclient", version.ref = "kuaclient" }
+kuaserver = { module = "com.bakerhughes.ua:kuaserver", version.ref = "kuaserver" }
+kuacommons = { module = "com.bakerhughes.ua:kuacommons", version.ref = "kuacommons" }
+
+opcua-clients = {module = "com.bakerhughes.dsa:opcua-clients", version.ref = "opcua-clients"}
+
+prosys-opcua = { module = "com.prosysopc:prosys-opc-ua-java-sdk-client-server", version.ref = "prosys-opcua" }
+
+uomconverter = { module = "com.bakerhughes.dsa:unit-converter", version.ref = "uom-converter" }
+
+[bundles]
