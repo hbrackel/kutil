@@ -5,8 +5,14 @@ plugins {
 }
 
 repositories {
-    maven { url = upstreamRepoUrl() }
-    maven { url = libsReleaseRepoUrl() }
+    maven {
+        url = upstreamRepoUrl()
+        isAllowInsecureProtocol = true
+    }
+    maven {
+        url = libsReleaseRepoUrl()
+        isAllowInsecureProtocol = true
+    }
 }
 
 group = "de.macnix.util"

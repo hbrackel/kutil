@@ -4,7 +4,10 @@ plugins {
 
 repositories {
     //    maven { url = upstreamRepoUrl() }
-    maven { url = libsReleaseRepoUrl() }
+    maven {
+        url = libsReleaseRepoUrl()
+        isAllowInsecureProtocol = true
+    }
 }
 
 dependencies {

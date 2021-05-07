@@ -8,6 +8,7 @@ publishing {
         maven {
             name = "external"
             url = libsReleaseLocalRepoUrl()
+            isAllowInsecureProtocol = true
             credentials {
                 username = deployUser()
                 password = deployPassword()
@@ -16,6 +17,7 @@ publishing {
         maven {
             name = "downstream"
             url = downstreamRepoUrl()
+            isAllowInsecureProtocol = true
         }
     }
 }
