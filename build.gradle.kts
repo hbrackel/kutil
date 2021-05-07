@@ -18,9 +18,9 @@ repositories {
 group = "de.macnix.util"
 
 dependencies {
-    implementation("org.slf4j:slf4j-api:${GlobalVersions.slf4jApiVersion}")
-    implementation("com.fasterxml.jackson.core:jackson-databind:${GlobalVersions.jacksonVersion}")
-    implementation("io.projectreactor:reactor-core:${GlobalVersions.reactorCoreVersion}")
+    implementation(libs.slf4j.api)
+    implementation(libs.jackson.databind)
+    implementation(libs.reactor.core)
 }
 
 publishing {
