@@ -12,7 +12,8 @@ object ReceiveBuilder {
                 return try {
                     onMessage.invoke(msg, this)
                 } catch (e: Exception) {
-                    logger.error("error in receive(msg[body]={}) - {}", msg.body(), e.message)
+                    logger.error("error in receive(msg[body]={}) => {}", msg.body(), e.message)
+                    logger.error(e.stackTraceToString())
                     this
                 }
             }
