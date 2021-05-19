@@ -19,8 +19,8 @@ pluginManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 dependencyResolutionManagement {
     versionCatalogs {
-        create("testLibs") { from(files("gradle/versions/test-libs.versions.toml")) }
-        create("libs") { from(files("gradle/versions/libs.versions.toml")) }
+        create("libs") { from("de.macnix:version-catalogs-maven:latest.release") }
+        create("testLibs") { from("de.macnix:version-catalogs-maven-test:latest.release") }
     }
 
     repositories {
