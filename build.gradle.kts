@@ -20,7 +20,7 @@ group = "de.macnix.util"
 dependencies {
     implementation(libs.slf4j.api)
     implementation(libs.jackson.databind)
-    implementation(libs.bundles.vertx)
+    implementation(libs.bundles.vertx.kotlin)
 
     testImplementation(libs.jackson.module.kotlin)
     testImplementation(testLibs.junit.jupiter)
