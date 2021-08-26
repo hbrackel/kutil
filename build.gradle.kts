@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm")
+    alias(macnix.plugins.gitver)
     id("ci-publishing-conventions")
-    id("de.macnix.gitversion")
 }
 
 repositories {
