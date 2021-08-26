@@ -15,11 +15,12 @@ abstract class AbstractBehaviourVerticle<T> : CoroutineVerticle(), AbstractBehav
     final override lateinit var behavior: Behavior<T>
         private set
 
-    protected lateinit var eventBusAddress:String
+    protected lateinit var eventBusAddress: String
 
     override suspend fun start() {
         logger.info("starting {}", javaClass.simpleName)
-        eventBusAddress = config.getString("eventBusAddress", "eventBus://${javaClass.name}-${this.deploymentID}")
+        eventBusAddress =
+            config.getString(EVENTBUS_ADDRESS_CFG_KEY, "eventBus://${javaClass.name}-${this.deploymentID}")
         actorRef = ActorRef(eventBusAddress)
         sequentialProcessing = config.getBoolean("sequentialProcessing", false)
         logger.info("config[\"eventBusAddress\"]     : {}", eventBusAddress)
@@ -59,5 +60,9 @@ abstract class AbstractBehaviourVerticle<T> : CoroutineVerticle(), AbstractBehav
 
     override suspend fun stop() {
         logger.info("stopping {}", javaClass.simpleName)
+    }
+
+    companion object {
+        const val EVENTBUS_ADDRESS_CFG_KEY = "eventBusAddress"
     }
 }
