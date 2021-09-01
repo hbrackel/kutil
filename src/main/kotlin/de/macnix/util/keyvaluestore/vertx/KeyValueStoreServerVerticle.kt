@@ -9,7 +9,7 @@ import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.await
 
-class KeyValueStoreServer : AbstractBehaviourVerticle<JsonObject>() {
+class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
     private var storePath: String? = null
     private var store = JsonObject()
     lateinit private var fs: FileSystem
@@ -22,7 +22,6 @@ class KeyValueStoreServer : AbstractBehaviourVerticle<JsonObject>() {
         fs = vertx.fileSystem()
         createStoreFileIfNotExists()
         initializeStoreFromStoreFile()
-
     }
 
     private suspend fun createStoreFileIfNotExists() {

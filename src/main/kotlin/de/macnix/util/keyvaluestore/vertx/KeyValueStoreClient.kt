@@ -285,6 +285,40 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
         return value ?: default
     }
 
+    override suspend fun putJsonObject(key: String, value: JsonObject): JsonObject {
+        try {
+            eventBus.request<Unit>(
+                eventBusAddress, jsonObjectOf(
+                    "action" to "put",
+                    "key" to key,
+                    "value" to jsonObjectOf(
+                        key to value,
+                        "className" to value.javaClass.name
+                    )
+                )
+            ).await()
+        } catch (e: Exception) {
+            logger.warn("Failed to putBoolean(key: '{}', value: '{}') => {}", key, value, e.message)
+        }
+        return value
+    }
+
+
+    override suspend fun getJsonObject(key: String, default: JsonObject?): JsonObject? {
+        val value = try {
+            eventBus.request<JsonObject?>(
+                eventBusAddress, jsonObjectOf(
+                    "action" to "get",
+                    "key" to key
+                )
+            ).await().body()?.getJsonObject(key)
+        } catch (e: Exception) {
+            logger.warn("Failed to getJsonObject(key: '{}', default: '{}') => {}", key, default, e.message)
+            null
+        }
+        return value ?: default
+    }
+
     override suspend fun remove(key: String): Any? {
         val removedValue = try {
             eventBus.request<JsonObject?>(
@@ -318,6 +352,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(key)?.toShort()
                     java.lang.Boolean::class.java.name, Boolean::class.java.name -> storeValue.getBoolean(key)
                     java.lang.String::class.java.name, String::class.java.name -> storeValue.getString(key)
+                    JsonObject::class.java.name -> storeValue.getJsonObject(key)
                     else -> null
                 }
             } else {
@@ -340,6 +375,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                 java.lang.Short::class.java.name, Short::class.java.name -> putShort(key, value as Short)
                 java.lang.Boolean::class.java.name, Boolean::class.java.name -> putBoolean(key, value as Boolean)
                 java.lang.String::class.java.name, String::class.java.name -> putString(key, value as String)
+                JsonObject::class.java.name -> putJsonObject(key, value as JsonObject)
             }
         } catch (e: Exception) {
             logger.warn("Failed to putValue(key: '{}', value: '{}') => {}", key, value, e.message)

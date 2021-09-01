@@ -14,7 +14,7 @@ import java.io.File
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class KeyValueStoreVertxTest {
+class VertxKeyValueStoreTest {
     private val vertx: Vertx = Vertx.vertx()
     private val eventBusAddress = "kvs-test"
 
@@ -73,6 +73,17 @@ class KeyValueStoreVertxTest {
             }
             assertThat(boolValue).isFalse()
         }
+
+        @Test
+        fun `should return the stored JsonObject value for an existing key`() {
+            val value = jsonObjectOf("someKey" to "someValue")
+            val result = runBlocking {
+                kvsClient.putJsonObject("theKey", value)
+                kvsClient.getJsonObject("theKey")
+            }
+            assertThat(result).isEqualTo(value)
+        }
+
 
         @Test
         fun `should return the stored Int value for an existing key`() {
@@ -166,6 +177,16 @@ class KeyValueStoreVertxTest {
         @Nested
         @DisplayName("Untyped store access - putValue(), getValue()")
         inner class UntypedStoreAccess {
+            @Test
+            fun `should return the stored JsonObject value for an existing key`() {
+                val value = jsonObjectOf("someKey" to "someValue")
+                val result = runBlocking {
+                    kvsClient.putValue("theKey", value)
+                    kvsClient.getValue("theKey")
+                }
+                assertThat(result).isEqualTo(value)
+            }
+
             @Test
             fun `should return the stored String value for an existing key`() {
                 val value = "the string"
@@ -262,6 +283,17 @@ class KeyValueStoreVertxTest {
         @DisplayName("Untyped store reads for typed writes - put<Type>(), getValue()")
         inner class TypedStoreAccessForUntypedWrites {
             @Test
+            fun `should return the stored JsonObject value for an existing key`() {
+                val value = jsonObjectOf("someKey" to "someValue")
+                val result = runBlocking {
+                    kvsClient.putJsonObject("theKey", value)
+                    kvsClient.getValue("theKey")
+                }
+                assertThat(result).isEqualTo(value)
+            }
+
+
+            @Test
             fun `should return the stored String value for an existing key`() {
                 val value = "the string"
                 val result = runBlocking {
@@ -356,6 +388,16 @@ class KeyValueStoreVertxTest {
         @Nested
         @DisplayName("Untyped store writes with typed reads - putValue(), get<Type>()")
         inner class UntypedStoreAccessForTypedWrites {
+            @Test
+            fun `should return the stored JsonObject value for an existing key`() {
+                val value = jsonObjectOf("someKey" to "someValue")
+                val result = runBlocking {
+                    kvsClient.putValue("theKey", value)
+                    kvsClient.getJsonObject("theKey")
+                }
+                assertThat(result).isEqualTo(value)
+            }
+
             @Test
             fun `should return the stored String value for an existing key`() {
                 val value = "the string"
@@ -513,11 +555,11 @@ class KeyValueStoreVertxTest {
     suspend fun deployVerticle(storePath: String? = null) {
         deploymentId =
             vertx.deployVerticle(
-                KeyValueStoreServer(),
+                KeyValueStoreServerVerticle(),
                 deploymentOptionsOf(
                     config = jsonObjectOf(
                         Pair("eventBusAddress", eventBusAddress),
-                        Pair(KeyValueStoreServer.STORE_PATH_KEY, storePath)
+                        Pair(KeyValueStoreServerVerticle.STORE_PATH_KEY, storePath)
                     )
                 )
             ).await()
