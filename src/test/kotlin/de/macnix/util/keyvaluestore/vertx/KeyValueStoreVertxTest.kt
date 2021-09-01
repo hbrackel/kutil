@@ -1,4 +1,4 @@
-package de.macnix.util.keyvaluestore
+package de.macnix.util.keyvaluestore.vertx
 
 
 import de.macnix.util.file.readString
@@ -14,7 +14,7 @@ import java.io.File
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class KeyValueStoreTest {
+class KeyValueStoreVertxTest {
     private val vertx: Vertx = Vertx.vertx()
     private val eventBusAddress = "kvs-test"
 

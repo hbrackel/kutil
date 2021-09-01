@@ -1,4 +1,4 @@
-package de.macnix.util.keyvaluestore
+package de.macnix.util.keyvaluestore.vertx
 
 import de.macnix.util.vertx.vertxactor.verticle.AbstractBehaviourVerticle
 import de.macnix.util.vertx.vertxactor.verticle.Behavior

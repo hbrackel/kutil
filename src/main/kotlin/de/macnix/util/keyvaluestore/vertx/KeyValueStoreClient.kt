@@ -1,5 +1,6 @@
-package de.macnix.util.keyvaluestore
+package de.macnix.util.keyvaluestore.vertx
 
+import de.macnix.util.keyvaluestore.KeyValueStore
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get
@@ -7,7 +8,7 @@ import io.vertx.kotlin.core.json.jsonObjectOf
 import io.vertx.kotlin.coroutines.await
 import org.slf4j.LoggerFactory
 
-class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
+class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : KeyValueStore {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val eventBus = vertx.eventBus()
 
@@ -16,7 +17,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         logger.info("config[\"eventBusAddress\"]     : {}", eventBusAddress)
     }
 
-    suspend fun getString(key: String, default: String? = null): String? {
+    override suspend fun getString(key: String, default: String?): String? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -31,7 +32,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun putString(key: String, value: String): String {
+    override suspend fun putString(key: String, value: String): String {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -49,7 +50,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value
     }
 
-    suspend fun putInteger(key: String, value: Int): Int {
+    override suspend fun putInteger(key: String, value: Int): Int {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -67,7 +68,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value
     }
 
-    suspend fun getInteger(key: String, default: Int? = null): Int? {
+    override suspend fun getInteger(key: String, default: Int?): Int? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -82,7 +83,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun putFloat(key: String, value: Float): Float {
+    override suspend fun putFloat(key: String, value: Float): Float {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -100,7 +101,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value
     }
 
-    suspend fun getFloat(key: String, default: Float? = null): Float? {
+    override suspend fun getFloat(key: String, default: Float?): Float? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -115,7 +116,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun putDouble(key: String, value: Double): Double {
+    override suspend fun putDouble(key: String, value: Double): Double {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -133,7 +134,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value
     }
 
-    suspend fun getDouble(key: String, default: Double? = null): Double? {
+    override suspend fun getDouble(key: String, default: Double?): Double? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -148,7 +149,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun putLong(key: String, value: Long): Long {
+    override suspend fun putLong(key: String, value: Long): Long {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -167,7 +168,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
     }
 
 
-    suspend fun getLong(key: String, default: Long? = null): Long? {
+    override suspend fun getLong(key: String, default: Long?): Long? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -182,7 +183,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun putShort(key: String, value: Short): Short {
+    override suspend fun putShort(key: String, value: Short): Short {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -201,7 +202,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
     }
 
 
-    suspend fun getShort(key: String, default: Short? = null): Short? {
+    override suspend fun getShort(key: String, default: Short?): Short? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -216,7 +217,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun putByte(key: String, value: Byte): Byte {
+    override suspend fun putByte(key: String, value: Byte): Byte {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -235,7 +236,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
     }
 
 
-    suspend fun getByte(key: String, default: Byte? = null): Byte? {
+    override suspend fun getByte(key: String, default: Byte?): Byte? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -250,7 +251,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun putBoolean(key: String, value: Boolean): Boolean {
+    override suspend fun putBoolean(key: String, value: Boolean): Boolean {
         try {
             eventBus.request<Unit>(
                 eventBusAddress, jsonObjectOf(
@@ -269,7 +270,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
     }
 
 
-    suspend fun getBoolean(key: String, default: Boolean? = null): Boolean? {
+    override suspend fun getBoolean(key: String, default: Boolean?): Boolean? {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -284,7 +285,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return value ?: default
     }
 
-    suspend fun remove(key: String): Any? {
+    override suspend fun remove(key: String): Any? {
         val removedValue = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -299,7 +300,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         return removedValue
     }
 
-    suspend fun getValue(key: String): Any? {
+    override suspend fun getValue(key: String): Any? {
         return try {
             val storeValue: JsonObject? = eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -308,8 +309,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
                 )
             ).await().body()
             if (storeValue != null) {
-                val className: String? = storeValue.getString("className")
-                when (className) {
+                when (storeValue.getString("className")) {
                     java.lang.Double::class.java.name, Double::class.java.name -> storeValue.getDouble(key)
                     java.lang.Float::class.java.name, Float::class.java.name -> storeValue.getFloat(key)
                     java.lang.Byte::class.java.name, Byte::class.java.name -> storeValue.getInteger(key).toByte()
@@ -329,10 +329,9 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
         }
     }
 
-    suspend fun putValue(key: String, value: Any): Any {
+    override suspend fun putValue(key: String, value: Any): Any {
         try {
-            val clazzName = value.javaClass.name
-            when (clazzName) {
+            when (value.javaClass.name) {
                 java.lang.Double::class.java.name, Double::class.java.name -> putDouble(key, value as Double)
                 java.lang.Float::class.java.name, Float::class.java.name -> putFloat(key, value as Float)
                 java.lang.Byte::class.java.name, Byte::class.java.name -> putByte(key, value as Byte)
@@ -346,5 +345,9 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) {
             logger.warn("Failed to putValue(key: '{}', value: '{}') => {}", key, value, e.message)
         }
         return value
+    }
+
+    override fun close() {
+        // no resources to be released at the client side
     }
 }
