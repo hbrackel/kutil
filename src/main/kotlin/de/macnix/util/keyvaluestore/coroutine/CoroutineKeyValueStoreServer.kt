@@ -82,7 +82,7 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
 
     override suspend fun getString(key: String, default: String?): String? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getString(key)
+            kvs.getJsonObject(key)?.getString(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getString(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -91,20 +91,20 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putString(key: String, value: String): String = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun putInteger(key: String, value: Int): Int = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getInteger(key: String, default: Int?): Int? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getNumber(key)?.toInt()
+            kvs.getJsonObject(key)?.getNumber(VALUE_KEY)?.toInt()
         } catch (e: Exception) {
             logger.warn("Failed to getInteger(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -113,14 +113,14 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putFloat(key: String, value: Float): Float = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getFloat(key: String, default: Float?): Float? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getNumber(key)?.toFloat()
+            kvs.getJsonObject(key)?.getNumber(VALUE_KEY)?.toFloat()
         } catch (e: Exception) {
             logger.warn("Failed to getFloat(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -129,14 +129,14 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putDouble(key: String, value: Double): Double = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getDouble(key: String, default: Double?): Double? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getNumber(key)?.toDouble()
+            kvs.getJsonObject(key)?.getNumber(VALUE_KEY)?.toDouble()
         } catch (e: Exception) {
             logger.warn("Failed to getDouble(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -145,14 +145,14 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putLong(key: String, value: Long): Long = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getLong(key: String, default: Long?): Long? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getNumber(key)?.toLong()
+            kvs.getJsonObject(key)?.getNumber(VALUE_KEY)?.toLong()
         } catch (e: Exception) {
             logger.warn("Failed to getLong(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -161,14 +161,14 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putShort(key: String, value: Short): Short = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getShort(key: String, default: Short?): Short? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getNumber(key)?.toShort()
+            kvs.getJsonObject(key)?.getNumber(VALUE_KEY)?.toShort()
         } catch (e: Exception) {
             logger.warn("Failed to getShort(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -177,14 +177,14 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putByte(key: String, value: Byte): Byte = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getByte(key: String, default: Byte?): Byte? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getNumber(key)?.toByte()
+            kvs.getJsonObject(key)?.getNumber(VALUE_KEY)?.toByte()
         } catch (e: Exception) {
             logger.warn("Failed to getByte(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -193,14 +193,14 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putJsonObject(key: String, value: JsonObject): JsonObject = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getJsonObject(key: String, default: JsonObject?): JsonObject? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getJsonObject(key)
+            kvs.getJsonObject(key)?.getJsonObject(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getJsonObject(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -209,14 +209,14 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     }
 
     override suspend fun putBoolean(key: String, value: Boolean): Boolean = withContext(storeDispatcher) {
-        kvs.put(key, jsonObjectOf(key to value, "className" to value.javaClass.name))
+        kvs.put(key, jsonObjectOf(VALUE_KEY to value, "className" to value.javaClass.name))
         writeStoreToFile()
         value
     }
 
     override suspend fun getBoolean(key: String, default: Boolean?): Boolean? = withContext(storeDispatcher) {
         val value = try {
-            kvs.getJsonObject(key)?.getBoolean(key)
+            kvs.getJsonObject(key)?.getBoolean(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getBoolean(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -227,7 +227,7 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     override suspend fun remove(key: String): Any? = withContext(storeDispatcher) {
         val removed: JsonObject? = kvs.remove(key) as? JsonObject
         writeStoreToFile()
-        removed?.get(key)
+        removed?.get(VALUE_KEY)
     }
 
     override suspend fun getValue(key: String): Any? = withContext(storeDispatcher) {
@@ -236,15 +236,15 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
 
             if (storeValue != null) {
                 when (storeValue.getString("className")) {
-                    java.lang.Double::class.java.name, Double::class.java.name -> storeValue.getDouble(key)
-                    java.lang.Float::class.java.name, Float::class.java.name -> storeValue.getFloat(key)
-                    java.lang.Byte::class.java.name, Byte::class.java.name -> storeValue.getInteger(key).toByte()
-                    java.lang.Integer::class.java.name, Int::class.java.name -> storeValue.getInteger(key)
-                    java.lang.Long::class.java.name, Long::class.java.name -> storeValue.getLong(key)
-                    java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(key)?.toShort()
-                    java.lang.Boolean::class.java.name, Boolean::class.java.name -> storeValue.getBoolean(key)
-                    java.lang.String::class.java.name, String::class.java.name -> storeValue.getString(key)
-                    JsonObject::class.java.name -> storeValue.getJsonObject(key)
+                    java.lang.Double::class.java.name, Double::class.java.name -> storeValue.getDouble(VALUE_KEY)
+                    java.lang.Float::class.java.name, Float::class.java.name -> storeValue.getFloat(VALUE_KEY)
+                    java.lang.Byte::class.java.name, Byte::class.java.name -> storeValue.getInteger(VALUE_KEY).toByte()
+                    java.lang.Integer::class.java.name, Int::class.java.name -> storeValue.getInteger(VALUE_KEY)
+                    java.lang.Long::class.java.name, Long::class.java.name -> storeValue.getLong(VALUE_KEY)
+                    java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(VALUE_KEY)?.toShort()
+                    java.lang.Boolean::class.java.name, Boolean::class.java.name -> storeValue.getBoolean(VALUE_KEY)
+                    java.lang.String::class.java.name, String::class.java.name -> storeValue.getString(VALUE_KEY)
+                    JsonObject::class.java.name -> storeValue.getJsonObject(VALUE_KEY)
                     else -> null
                 }
             } else {
@@ -277,5 +277,9 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
         storeDispatcherExecutor.shutdownNow()
         fileDispatcherExecutor.shutdownNow()
         job.cancel()
+    }
+
+    companion object {
+        const val VALUE_KEY = "value"
     }
 }

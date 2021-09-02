@@ -125,6 +125,7 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
 
     companion object {
         const val STORE_PATH_KEY = "storePath"
+        const val VALUE_KEY = "value"
     }
 }
 

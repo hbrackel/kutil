@@ -1,6 +1,7 @@
 package de.macnix.util.keyvaluestore.vertx
 
 import de.macnix.util.keyvaluestore.KeyValueStore
+import de.macnix.util.keyvaluestore.vertx.KeyValueStoreServerVerticle.Companion.VALUE_KEY
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get
@@ -24,7 +25,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getString(key)
+            ).await().body()?.getString(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getString(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -39,7 +40,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -57,7 +58,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -75,7 +76,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getNumber(key)?.toInt()
+            ).await().body()?.getNumber(VALUE_KEY)?.toInt()
         } catch (e: Exception) {
             logger.warn("Failed to getInteger(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -90,7 +91,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -108,7 +109,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getNumber(key)?.toFloat()
+            ).await().body()?.getNumber(VALUE_KEY)?.toFloat()
         } catch (e: Exception) {
             logger.warn("Failed to getFloat(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -123,7 +124,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -141,7 +142,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getNumber(key)?.toDouble()
+            ).await().body()?.getNumber(VALUE_KEY)?.toDouble()
         } catch (e: Exception) {
             logger.warn("Failed to getDouble(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -156,7 +157,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -175,7 +176,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getNumber(key)?.toLong()
+            ).await().body()?.getNumber(VALUE_KEY)?.toLong()
         } catch (e: Exception) {
             logger.warn("Failed to getLong(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -190,7 +191,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -209,7 +210,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getNumber(key)?.toShort()
+            ).await().body()?.getNumber(VALUE_KEY)?.toShort()
         } catch (e: Exception) {
             logger.warn("Failed to getShort(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -224,7 +225,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -243,7 +244,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getNumber(key)?.toByte()
+            ).await().body()?.getNumber(VALUE_KEY)?.toByte()
         } catch (e: Exception) {
             logger.warn("Failed to getByte(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -258,7 +259,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -277,7 +278,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getBoolean(key)
+            ).await().body()?.getBoolean(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getBoolean(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -292,7 +293,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "put",
                     "key" to key,
                     "value" to jsonObjectOf(
-                        key to value,
+                        VALUE_KEY to value,
                         "className" to value.javaClass.name
                     )
                 )
@@ -311,7 +312,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "get",
                     "key" to key
                 )
-            ).await().body()?.getJsonObject(key)
+            ).await().body()?.getJsonObject(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getJsonObject(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -326,7 +327,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     "action" to "remove",
                     "key" to key
                 )
-            ).await().body()?.get<Any?>(key)
+            ).await().body()?.get<Any?>(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to remove(key: '{}') => {}", key, e.message)
             null
@@ -344,15 +345,15 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
             ).await().body()
             if (storeValue != null) {
                 when (storeValue.getString("className")) {
-                    java.lang.Double::class.java.name, Double::class.java.name -> storeValue.getDouble(key)
-                    java.lang.Float::class.java.name, Float::class.java.name -> storeValue.getFloat(key)
-                    java.lang.Byte::class.java.name, Byte::class.java.name -> storeValue.getInteger(key).toByte()
-                    java.lang.Integer::class.java.name, Int::class.java.name -> storeValue.getInteger(key)
-                    java.lang.Long::class.java.name, Long::class.java.name -> storeValue.getLong(key)
-                    java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(key)?.toShort()
-                    java.lang.Boolean::class.java.name, Boolean::class.java.name -> storeValue.getBoolean(key)
-                    java.lang.String::class.java.name, String::class.java.name -> storeValue.getString(key)
-                    JsonObject::class.java.name -> storeValue.getJsonObject(key)
+                    java.lang.Double::class.java.name, Double::class.java.name -> storeValue.getDouble(VALUE_KEY)
+                    java.lang.Float::class.java.name, Float::class.java.name -> storeValue.getFloat(VALUE_KEY)
+                    java.lang.Byte::class.java.name, Byte::class.java.name -> storeValue.getInteger(VALUE_KEY).toByte()
+                    java.lang.Integer::class.java.name, Int::class.java.name -> storeValue.getInteger(VALUE_KEY)
+                    java.lang.Long::class.java.name, Long::class.java.name -> storeValue.getLong(VALUE_KEY)
+                    java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(VALUE_KEY)?.toShort()
+                    java.lang.Boolean::class.java.name, Boolean::class.java.name -> storeValue.getBoolean(VALUE_KEY)
+                    java.lang.String::class.java.name, String::class.java.name -> storeValue.getString(VALUE_KEY)
+                    JsonObject::class.java.name -> storeValue.getJsonObject(VALUE_KEY)
                     else -> null
                 }
             } else {
