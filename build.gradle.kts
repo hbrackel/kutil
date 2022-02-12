@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     alias(macnix.plugins.gitver)
+    `maven-publish`
 //    id("ci-publishing-conventions")
 }
 
