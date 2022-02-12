@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm")
     alias(macnix.plugins.gitver)
-//    id("ci-publishing-conventions")
+    id("ci-publishing-conventions")
 }
 
 repositories {
@@ -42,17 +42,6 @@ tasks.create("listEnvironmentVariables") {
 
 }
 publishing {
-    repositories {
-        maven {
-            name = "external"
-            url = libsReleaseLocalRepoUrl()
-            isAllowInsecureProtocol = true
-            credentials {
-                username = deployUser()
-                password = deployPassword()
-            }
-        }
-    }
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
