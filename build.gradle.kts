@@ -34,6 +34,13 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+tasks.getByName("clean").dependsOn("listEnvironmentVariables")
+tasks.create("listEnvironmentVariables") {
+    System.getenv().forEach {
+        println("ENV: ${it.key}: ${it.value}")
+    }
+
+}
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
