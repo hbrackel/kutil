@@ -52,7 +52,7 @@ class CoroutineKeyValueStoreTests {
         fun `should return the stored 'true' Boolean value for an existing key`() {
             val boolValue = runBlocking {
                 kvsClient.putBoolean("theKey", true)
-                kvsClient.getBoolean("theKey")
+                kvsClient.getBoolean("theKey", false)
             }
             assertThat(boolValue).isTrue
         }
@@ -61,7 +61,7 @@ class CoroutineKeyValueStoreTests {
         fun `should return the stored 'false' Boolean value for an existing key`() {
             val boolValue = runBlocking {
                 kvsClient.putBoolean("theKey", false)
-                kvsClient.getBoolean("theKey")
+                kvsClient.getBoolean("theKey", true)
             }
             assertThat(boolValue).isFalse
         }
@@ -466,7 +466,7 @@ class CoroutineKeyValueStoreTests {
                 val trueValue = true
                 val result = runBlocking {
                     kvsClient.putValue("theKey", trueValue)
-                    kvsClient.getBoolean("theKey")
+                    kvsClient.getBoolean("theKey", false)
                 }
                 assertThat(result).isEqualTo(trueValue)
             }
@@ -476,7 +476,7 @@ class CoroutineKeyValueStoreTests {
                 val falseValue = false
                 val falseResult = runBlocking {
                     kvsClient.putValue("theKey", falseValue)
-                    kvsClient.getBoolean("theKey")
+                    kvsClient.getBoolean("theKey", true)
                 }
                 assertThat(falseResult).isEqualTo(falseValue)
             }

@@ -60,7 +60,7 @@ class VertxKeyValueStoreTest {
         fun `should return the stored 'true' Boolean value for an existing key`() {
             val boolValue = runBlocking {
                 kvsClient.putBoolean("theKey", true)
-                kvsClient.getBoolean("theKey")
+                kvsClient.getBoolean("theKey", false)
             }
             assertThat(boolValue).isTrue()
         }
@@ -69,7 +69,7 @@ class VertxKeyValueStoreTest {
         fun `should return the stored 'false' Boolean value for an existing key`() {
             val boolValue = runBlocking {
                 kvsClient.putBoolean("theKey", false)
-                kvsClient.getBoolean("theKey")
+                kvsClient.getBoolean("theKey", true)
             }
             assertThat(boolValue).isFalse()
         }
@@ -473,7 +473,7 @@ class VertxKeyValueStoreTest {
                 val trueValue = true
                 val result = runBlocking {
                     kvsClient.putValue("theKey", trueValue)
-                    kvsClient.getBoolean("theKey")
+                    kvsClient.getBoolean("theKey", false)
                 }
                 assertThat(result).isEqualTo(trueValue)
             }
@@ -483,7 +483,7 @@ class VertxKeyValueStoreTest {
                 val falseValue = false
                 val falseResult = runBlocking {
                     kvsClient.putValue("theKey", falseValue)
-                    kvsClient.getBoolean("theKey")
+                    kvsClient.getBoolean("theKey", true)
                 }
                 assertThat(falseResult).isEqualTo(falseValue)
             }
