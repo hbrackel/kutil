@@ -18,7 +18,7 @@ interface KeyValueStore : AutoCloseable {
     suspend fun putByte(key: String, value: Byte): Byte
     suspend fun getByte(key: String, default: Byte? = null): Byte?
     suspend fun putBoolean(key: String, value: Boolean): Boolean
-    suspend fun getBoolean(key: String, default: Boolean? = null): Boolean?
+    suspend fun getBoolean(key: String, default: Boolean): Boolean
     suspend fun remove(key: String): Any?
     suspend fun getValue(key: String): Any?
     suspend fun putValue(key: String, value: Any): Any

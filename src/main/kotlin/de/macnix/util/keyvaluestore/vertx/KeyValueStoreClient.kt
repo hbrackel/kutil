@@ -271,7 +271,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
     }
 
 
-    override suspend fun getBoolean(key: String, default: Boolean?): Boolean? {
+    override suspend fun getBoolean(key: String, default: Boolean): Boolean {
         val value = try {
             eventBus.request<JsonObject?>(
                 eventBusAddress, jsonObjectOf(
@@ -350,7 +350,8 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     java.lang.Byte::class.java.name, Byte::class.java.name -> storeValue.getInteger(VALUE_KEY).toByte()
                     java.lang.Integer::class.java.name, Int::class.java.name -> storeValue.getInteger(VALUE_KEY)
                     java.lang.Long::class.java.name, Long::class.java.name -> storeValue.getLong(VALUE_KEY)
-                    java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(VALUE_KEY)?.toShort()
+                    java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(VALUE_KEY)
+                        ?.toShort()
                     java.lang.Boolean::class.java.name, Boolean::class.java.name -> storeValue.getBoolean(VALUE_KEY)
                     java.lang.String::class.java.name, String::class.java.name -> storeValue.getString(VALUE_KEY)
                     JsonObject::class.java.name -> storeValue.getJsonObject(VALUE_KEY)

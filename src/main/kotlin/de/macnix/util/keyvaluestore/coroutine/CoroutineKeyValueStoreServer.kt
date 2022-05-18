@@ -214,7 +214,7 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
         value
     }
 
-    override suspend fun getBoolean(key: String, default: Boolean?): Boolean? = withContext(storeDispatcher) {
+    override suspend fun getBoolean(key: String, default: Boolean): Boolean = withContext(storeDispatcher) {
         val value = try {
             kvs.getJsonObject(key)?.getBoolean(VALUE_KEY)
         } catch (e: Exception) {
