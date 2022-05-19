@@ -24,9 +24,9 @@ dependencies {
     implementation(libs.bundles.vertx.config)
 
     testImplementation(libs.jackson.module.kotlin)
-    testImplementation(testLibs.junit.jupiter)
-    testImplementation(testLibs.assertj.core)
-    testImplementation(testLibs.awaitility.kotlin)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.awaitility.kotlin)
 
 }
 

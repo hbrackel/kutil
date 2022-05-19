@@ -14,8 +14,7 @@ pluginManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 dependencyResolutionManagement {
     versionCatalogs {
-        create("libs") { from("de.macnix:version-catalogs-maven:2022.05.19-1") }
-        create("testLibs") { from("de.macnix:version-catalogs-maven-test:2022.03.20-1") }
+        create("libs") { from("de.macnix:version-catalogs-maven:2022.05.19-2") }
         create("macnix") { from("de.macnix:version-catalogs-macnix:latest.release") }
     }
 
