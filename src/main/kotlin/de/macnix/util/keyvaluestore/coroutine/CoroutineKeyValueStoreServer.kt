@@ -43,8 +43,8 @@ class CoroutineKeyValueStoreServer(storePath: String? = null) : KeyValueStore, C
     private suspend fun createStoreFileIfNotExists() = withContext(fileDispatcher) {
         if (storeFile != null) {
             try {
-                logger.info("creating new store file at {}", storeFile.path)
                 if (!storeFile.exists()) {
+                    logger.info("creating new store file at {}", storeFile.path)
                     writeStoreToFile()
                 }
             } catch (e: Exception) {

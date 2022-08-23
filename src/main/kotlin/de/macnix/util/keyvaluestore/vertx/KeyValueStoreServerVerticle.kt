@@ -28,8 +28,8 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
     private suspend fun createStoreFileIfNotExists() {
         if (storePath != null) {
             try {
-                logger.info("creating new store file at {}", storePath)
                 if (!fs.exists(storePath).await()) {
+                    logger.info("creating new store file at {}", storePath)
                     flushStore()
                 }
             } catch (e: Exception) {
@@ -115,7 +115,6 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
 
     override suspend fun doBeforeStop() {
         flushStore()
-        super.stop()
     }
 
     companion object {
