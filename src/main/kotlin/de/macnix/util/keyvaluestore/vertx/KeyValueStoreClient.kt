@@ -3,6 +3,7 @@ package de.macnix.util.keyvaluestore.vertx
 import de.macnix.util.keyvaluestore.KeyValueStore
 import de.macnix.util.keyvaluestore.vertx.KeyValueStoreServerVerticle.Companion.VALUE_KEY
 import io.vertx.core.Vertx
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get
 import io.vertx.kotlin.core.json.jsonObjectOf
@@ -299,7 +300,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                 )
             ).await()
         } catch (e: Exception) {
-            logger.warn("Failed to putBoolean(key: '{}', value: '{}') => {}", key, value, e.message)
+            logger.warn("Failed to putJsonObject(key: '{}', value: '{}') => {}", key, value, e.message)
         }
         return value
     }
@@ -315,6 +316,40 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
             ).await().body()?.getJsonObject(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getJsonObject(key: '{}', default: '{}') => {}", key, default, e.message)
+            null
+        }
+        return value ?: default
+    }
+
+    override suspend fun putJsonArray(key: String, value: JsonArray): JsonArray {
+        try {
+            eventBus.request<Unit>(
+                eventBusAddress, jsonObjectOf(
+                    "action" to "put",
+                    "key" to key,
+                    "value" to jsonObjectOf(
+                        VALUE_KEY to value,
+                        "className" to value.javaClass.name
+                    )
+                )
+            ).await()
+        } catch (e: Exception) {
+            logger.warn("Failed to putJsonArray(key: '{}', value: '{}') => {}", key, value, e.message)
+        }
+        return value
+    }
+
+
+    override suspend fun getJsonArray(key: String, default: JsonArray?): JsonArray? {
+        val value = try {
+            eventBus.request<JsonObject?>(
+                eventBusAddress, jsonObjectOf(
+                    "action" to "get",
+                    "key" to key
+                )
+            ).await().body()?.getJsonArray(VALUE_KEY)
+        } catch (e: Exception) {
+            logger.warn("Failed to getJsonArray(key: '{}', default: '{}') => {}", key, default, e.message)
             null
         }
         return value ?: default
@@ -352,9 +387,11 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                     java.lang.Long::class.java.name, Long::class.java.name -> storeValue.getLong(VALUE_KEY)
                     java.lang.Short::class.java.name, Short::class.java.name -> storeValue.getInteger(VALUE_KEY)
                         ?.toShort()
+
                     java.lang.Boolean::class.java.name, Boolean::class.java.name -> storeValue.getBoolean(VALUE_KEY)
                     java.lang.String::class.java.name, String::class.java.name -> storeValue.getString(VALUE_KEY)
                     JsonObject::class.java.name -> storeValue.getJsonObject(VALUE_KEY)
+                    JsonArray::class.java.name -> storeValue.getJsonArray(VALUE_KEY)
                     else -> null
                 }
             } else {
@@ -378,6 +415,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: String) : K
                 java.lang.Boolean::class.java.name, Boolean::class.java.name -> putBoolean(key, value as Boolean)
                 java.lang.String::class.java.name, String::class.java.name -> putString(key, value as String)
                 JsonObject::class.java.name -> putJsonObject(key, value as JsonObject)
+                JsonArray::class.java.name -> putJsonArray(key, value as JsonArray)
             }
         } catch (e: Exception) {
             logger.warn("Failed to putValue(key: '{}', value: '{}') => {}", key, value, e.message)
