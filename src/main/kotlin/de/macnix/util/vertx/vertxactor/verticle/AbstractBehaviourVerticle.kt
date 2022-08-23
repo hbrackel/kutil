@@ -17,10 +17,15 @@ abstract class AbstractBehaviourVerticle<T> : CoroutineVerticle(), AbstractBehav
 
     protected lateinit var eventBusAddress: String
 
-    override suspend fun start() {
+    abstract suspend fun registerMessageCodecs()
+    abstract suspend fun doAfterStart()
+    abstract suspend fun doBeforeStop()
+
+    final override suspend fun start() {
         logger.info("starting {}", javaClass.simpleName)
+        registerMessageCodecs()
         eventBusAddress =
-            config.getString(EVENTBUS_ADDRESS_CFG_KEY, "eventBus://${javaClass.name}-${this.deploymentID}")
+            config.getString(EVENTBUS_ADDRESS_CFG_KEY, "eventBus://${javaClass.name}")
         actorRef = ActorRef(eventBusAddress)
         sequentialProcessing = config.getBoolean("sequentialProcessing", false)
         logger.info("config[\"eventBusAddress\"]     : {}", eventBusAddress)
@@ -34,6 +39,7 @@ abstract class AbstractBehaviourVerticle<T> : CoroutineVerticle(), AbstractBehav
                 logger.error("received invalid message with body='{}'", msg.body())
             }
         }
+        doAfterStart()
     }
 
     private var processingInProgress = false
@@ -58,8 +64,9 @@ abstract class AbstractBehaviourVerticle<T> : CoroutineVerticle(), AbstractBehav
         }
     }
 
-    override suspend fun stop() {
+    final override suspend fun stop() {
         logger.info("stopping {}", javaClass.simpleName)
+        doBeforeStop()
     }
 
     companion object {
