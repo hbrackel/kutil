@@ -1,5 +1,6 @@
 package de.macnix.util.keyvaluestore
 
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 
 interface KeyValueStore : AutoCloseable {
@@ -24,4 +25,6 @@ interface KeyValueStore : AutoCloseable {
     suspend fun putValue(key: String, value: Any): Any
     suspend fun putJsonObject(key: String, value: JsonObject): JsonObject
     suspend fun getJsonObject(key: String, default: JsonObject? = null): JsonObject?
+    suspend fun putJsonArray(key: String, value: JsonArray): JsonArray
+    suspend fun getJsonArray(key: String, default: JsonArray? = null): JsonArray?
 }
