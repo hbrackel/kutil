@@ -3,19 +3,18 @@ package de.macnix.util.keyvaluestore.vertx
 import de.macnix.util.vertx.vertxactor.verticle.AbstractBehaviourVerticle
 import de.macnix.util.vertx.vertxactor.verticle.Behavior
 import de.macnix.util.vertx.vertxactor.verticle.ReceiveBuilder
-import io.vertx.core.Future
 import io.vertx.core.eventbus.Message
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.await
+import kotlinx.coroutines.async
 
 class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
     private var storePath: String? = null
     private var store = JsonObject()
-    lateinit private var fs: FileSystem
+    private lateinit var fs: FileSystem
 
-    override suspend fun start() {
-        super.start()
+    override suspend fun doAfterStart() {
         storePath = config.getString(STORE_PATH_KEY)
         logger.info("config[\"storePath\"]           : {}", storePath)
 
@@ -24,12 +23,14 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
         initializeStoreFromStoreFile()
     }
 
+    override suspend fun registerMessageCodecs() {}
+
     private suspend fun createStoreFileIfNotExists() {
         if (storePath != null) {
             try {
                 logger.info("creating new store file at {}", storePath)
                 if (!fs.exists(storePath).await()) {
-                    flushStore()?.await()
+                    flushStore()
                 }
             } catch (e: Exception) {
                 logger.error("Failed to create store file at {} => {}", storePath, e.message)
@@ -54,23 +55,16 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
 
     }
 
-    private fun flushStore(): Future<Void>? {
-        return if (storePath != null) {
-            val future = fs.writeFile(storePath, store.toBuffer())
-
-            future.onSuccess {
+    private suspend fun flushStore() {
+        if (storePath != null) {
+            try {
+                fs.writeFile(storePath, store.toBuffer()).await()
                 logger.debug("key-value-store successfully written to file '{}'", storePath)
-            }
-            future.onFailure { t ->
+            } catch (t: Throwable) {
                 logger.error(
-                    "failed to write key-value-store to file '{}' => {}",
-                    storePath,
-                    t.message
+                    "failed to write key-value-store to file '{}' => {}", storePath, t.message
                 )
             }
-            future
-        } else {
-            null
         }
     }
 
@@ -81,7 +75,7 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
         }
     }
 
-    private fun handleMessage(message: Message<JsonObject>) {
+    private suspend fun handleMessage(message: Message<JsonObject>) {
         val body = message.body()
         val action: String? = body.getString("action")
         val key: String? = body.getString("key")
@@ -96,30 +90,31 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
                     val value: JsonObject? = store.getJsonObject(key)
                     message.reply(value)
                 }
+
                 "put" -> {
                     store.put(key, body.getJsonObject("value"))
-                    flushStore()
+                    async { flushStore() }
                     message.reply(null)
                 }
+
                 "remove" -> {
                     val removed: JsonObject? = store.remove(key) as? JsonObject
                     message.reply(removed)
                 }
+
                 else -> {
                     message.fail(-1, "Invalid action='$action'")
                 }
             }
         } catch (e: Exception) {
             logger.error(
-                "handleMessage() - exception caught when processing message with body={} => {}",
-                body,
-                e.message
+                "handleMessage() - exception caught when processing message with body={} => {}", body, e.message
             )
         }
     }
 
-    override suspend fun stop() {
-        flushStore()?.await()   // need to make sure, that the store has been completely written to file before the verticle stops
+    override suspend fun doBeforeStop() {
+        flushStore()
         super.stop()
     }
 
