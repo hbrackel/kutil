@@ -62,7 +62,7 @@ class VertxKeyValueStoreTest {
                 kvsClient.putBoolean("theKey", true)
                 kvsClient.getBoolean("theKey", false)
             }
-            assertThat(boolValue).isTrue()
+            assertThat(boolValue).isTrue
         }
 
         @Test
@@ -71,7 +71,7 @@ class VertxKeyValueStoreTest {
                 kvsClient.putBoolean("theKey", false)
                 kvsClient.getBoolean("theKey", true)
             }
-            assertThat(boolValue).isFalse()
+            assertThat(boolValue).isFalse
         }
 
         @Test
@@ -550,12 +550,12 @@ class VertxKeyValueStoreTest {
 
     @Nested
     @DisplayName("a volatile KeyValueStore")
-    inner class VolatileKeyValueStore {}
+    inner class VolatileKeyValueStore
 
     suspend fun deployVerticle(storePath: String? = null) {
         deploymentId =
             vertx.deployVerticle(
-                KeyValueStoreServerVerticle(),
+                KeyValueStoreServerVerticle(storePath?:""),
                 deploymentOptionsOf(
                     config = jsonObjectOf(
                         Pair("eventBusAddress", eventBusAddress),
