@@ -4,18 +4,19 @@ pluginManagement {
             url = uri("${System.getenv("REPO_PLUGINS_RELEASE") ?: extra["pluginsReleaseRepoDefaultUrl"] ?: ""}")
             isAllowInsecureProtocol = true
         }
-        maven {
-            url = uri("${System.getenv("REPO_LIBS_RELEASE") ?: extra["libsReleaseRepoDefaultUrl"] ?: ""}")
-            isAllowInsecureProtocol = true
-        }
+        gradlePluginPortal()
     }
 }
 
 enableFeaturePreview("VERSION_CATALOGS")
 dependencyResolutionManagement {
     versionCatalogs {
-        create("libs") { from("de.macnix:version-catalogs-maven:2022.05.19-2") }
-        create("macnix") { from("de.macnix:version-catalogs-macnix:latest.release") }
+        create("libs") {
+            from(files("./gradle/versions/libs.versions.toml"))
+        }
+        create("macnix") {
+            from(files("./gradle/versions/macnix.versions.toml"))
+        }
     }
 
     repositories {
