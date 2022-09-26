@@ -9,13 +9,11 @@ import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.await
 import kotlinx.coroutines.async
 
-class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
-    private var storePath: String? = null
+class KeyValueStoreServerVerticle(private val storePath: String) : AbstractBehaviourVerticle<JsonObject>() {
     private var store = JsonObject()
     private lateinit var fs: FileSystem
 
     override suspend fun doAfterStart() {
-        storePath = config.getString(STORE_PATH_KEY)
         logger.info("config[\"storePath\"]           : {}", storePath)
 
         fs = vertx.fileSystem()
@@ -26,45 +24,38 @@ class KeyValueStoreServerVerticle : AbstractBehaviourVerticle<JsonObject>() {
     override suspend fun registerMessageCodecs() {}
 
     private suspend fun createStoreFileIfNotExists() {
-        if (storePath != null) {
-            try {
-                if (!fs.exists(storePath).await()) {
-                    logger.info("creating new store file at {}", storePath)
-                    flushStore()
-                }
-            } catch (e: Exception) {
-                logger.error("Failed to create store file at {} => {}", storePath, e.message)
-                throw e
+        try {
+            if (!fs.exists(storePath).await()) {
+                logger.info("creating new store file at {}", storePath)
+                flushStore()
             }
+        } catch (e: Exception) {
+            logger.error("Failed to create store file at {} => {}", storePath, e.message)
+            throw e
         }
     }
 
     private suspend fun initializeStoreFromStoreFile() {
-        if (storePath != null) {
-            logger.info("initializing store from file at {}", storePath)
-            try {
-                val buffer = fs.readFile(storePath).await()
-                val jsonFromStore = JsonObject(buffer)
-                store = jsonFromStore
-            } catch (e: Exception) {
-                logger.error("Failed to initialize store from file at {} => {}", storePath, e.message)
-                logger.warn("Creating a new empty store")
-                store = JsonObject()
-            }
+        logger.info("initializing store from file at {}", storePath)
+        try {
+            val buffer = fs.readFile(storePath).await()
+            val jsonFromStore = JsonObject(buffer)
+            store = jsonFromStore
+        } catch (e: Exception) {
+            logger.error("Failed to initialize store from file at {} => {}", storePath, e.message)
+            logger.warn("Creating a new empty store")
+            store = JsonObject()
         }
-
     }
 
     private suspend fun flushStore() {
-        if (storePath != null) {
-            try {
-                fs.writeFile(storePath, store.toBuffer()).await()
-                logger.debug("key-value-store successfully written to file '{}'", storePath)
-            } catch (t: Throwable) {
-                logger.error(
-                    "failed to write key-value-store to file '{}' => {}", storePath, t.message
-                )
-            }
+        try {
+            fs.writeFile(storePath, store.toBuffer()).await()
+            logger.debug("key-value-store successfully written to file '{}'", storePath)
+        } catch (t: Throwable) {
+            logger.error(
+                "failed to write key-value-store to file '{}' => {}", storePath, t.message
+            )
         }
     }
 
