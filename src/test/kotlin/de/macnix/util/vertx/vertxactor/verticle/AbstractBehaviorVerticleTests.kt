@@ -94,4 +94,13 @@ class AsynchVerticle : AbstractBehaviourVerticle<String>() {
         }
 
     }
+
+    override suspend fun registerMessageCodecs() {
+    }
+
+    override suspend fun doAfterStart() {
+    }
+
+    override suspend fun doBeforeStop() {
+    }
 }
