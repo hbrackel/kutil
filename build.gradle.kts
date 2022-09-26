@@ -1,21 +1,10 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin.jvm)
+    `maven-publish`
     alias(macnix.plugins.gitver)
     alias(libs.plugins.ben.manes.versions)
-    id("ci-publishing-conventions")
-}
-
-repositories {
-    maven {
-        url = upstreamRepoUrl()
-        isAllowInsecureProtocol = true
-    }
-    maven {
-        url = libsReleaseRepoUrl()
-        isAllowInsecureProtocol = true
-    }
 }
 
 group = "de.macnix.util"
