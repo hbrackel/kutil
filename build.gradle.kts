@@ -1,4 +1,6 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.gradle.api.JavaVersion.VERSION_1_8
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -21,7 +23,16 @@ dependencies {
     testImplementation(libs.awaitility.kotlin)
 
 }
+java {
+    sourceCompatibility = VERSION_1_8
+    targetCompatibility = VERSION_1_8
+}
 
+tasks.withType<KotlinCompile>().all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 tasks.withType<Test> {
     useJUnitPlatform()
 }
