@@ -1,4 +1,3 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -6,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     `maven-publish`
     alias(macnix.plugins.gitver)
-    alias(libs.plugins.ben.manes.versions)
 }
 
 group = "de.macnix.util"
@@ -35,19 +33,6 @@ tasks.withType<KotlinCompile>().all {
 }
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
-}
-
-tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf {
-        isNonStable(candidate.version) && !isNonStable(currentVersion)
-    }
 }
 
 publishing {
