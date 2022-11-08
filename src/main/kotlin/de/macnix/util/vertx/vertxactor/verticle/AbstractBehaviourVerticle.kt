@@ -6,7 +6,8 @@ import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
-abstract class AbstractBehaviourVerticle<T> : CoroutineVerticle(), AbstractBehavior<T> {
+abstract class AbstractBehaviourVerticle<T>(private val serviceAddress: String? = null) : CoroutineVerticle(),
+    AbstractBehavior<T> {
     private var sequentialProcessing: Boolean = false
     private val mailbox: MutableList<Message<T>> by lazy { mutableListOf() }
     lateinit var actorRef: ActorRef
@@ -24,8 +25,7 @@ abstract class AbstractBehaviourVerticle<T> : CoroutineVerticle(), AbstractBehav
     final override suspend fun start() {
         logger.info("starting {}", javaClass.simpleName)
         registerMessageCodecs()
-        eventBusAddress =
-            config.getString(EVENTBUS_ADDRESS_CFG_KEY, "eventBus://${javaClass.name}")
+        eventBusAddress = serviceAddress ?: config.getString(EVENTBUS_ADDRESS_CFG_KEY, "eventBus://${javaClass.name}")
         actorRef = ActorRef(eventBusAddress)
         sequentialProcessing = config.getBoolean("sequentialProcessing", false)
         logger.info("config[\"eventBusAddress\"]     : {}", eventBusAddress)
