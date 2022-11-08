@@ -1,3 +1,5 @@
 package de.macnix.util.vertx.vertxactor.verticle
 
-data class ActorRef(val address: String)
+import de.macnix.util.vertx.eventbus.EventBusAddress
+
+data class ActorRef(val address: EventBusAddress)

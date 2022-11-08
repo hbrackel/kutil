@@ -1,5 +1,6 @@
 package de.macnix.util.keyvaluestore.vertx
 
+import de.macnix.util.vertx.eventbus.EventBusAddress
 import de.macnix.util.vertx.vertxactor.verticle.AbstractBehaviourVerticle
 import de.macnix.util.vertx.vertxactor.verticle.Behavior
 import de.macnix.util.vertx.vertxactor.verticle.ReceiveBuilder
@@ -7,9 +8,10 @@ import io.vertx.core.eventbus.Message
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.await
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-class KeyValueStoreServerVerticle(private val storePath: String) : AbstractBehaviourVerticle<JsonObject>() {
+class KeyValueStoreServerVerticle(private val storePath: String, eventBusAddress: EventBusAddress) :
+    AbstractBehaviourVerticle<JsonObject>(eventBusAddress) {
     private var store = JsonObject()
     private lateinit var fs: FileSystem
 
@@ -37,14 +39,14 @@ class KeyValueStoreServerVerticle(private val storePath: String) : AbstractBehav
 
     private suspend fun initializeStoreFromStoreFile() {
         logger.info("initializing store from file at {}", storePath)
-        try {
+        store = try {
             val buffer = fs.readFile(storePath).await()
             val jsonFromStore = JsonObject(buffer)
-            store = jsonFromStore
+            jsonFromStore
         } catch (e: Exception) {
             logger.error("Failed to initialize store from file at {} => {}", storePath, e.message)
             logger.warn("Creating a new empty store")
-            store = JsonObject()
+            JsonObject()
         }
     }
 
@@ -84,7 +86,7 @@ class KeyValueStoreServerVerticle(private val storePath: String) : AbstractBehav
 
                 "put" -> {
                     store.put(key, body.getJsonObject("value"))
-                    async { flushStore() }
+                    launch { flushStore() }
                     message.reply(null)
                 }
 
@@ -109,7 +111,6 @@ class KeyValueStoreServerVerticle(private val storePath: String) : AbstractBehav
     }
 
     companion object {
-        const val STORE_PATH_KEY = "storePath"
         const val VALUE_KEY = "value"
     }
 }

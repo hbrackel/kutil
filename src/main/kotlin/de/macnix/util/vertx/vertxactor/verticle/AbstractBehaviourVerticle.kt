@@ -1,22 +1,23 @@
 package de.macnix.util.vertx.vertxactor.verticle
 
+import de.macnix.util.vertx.eventbus.EventBusAddress
 import io.vertx.core.eventbus.Message
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
-abstract class AbstractBehaviourVerticle<T>(private val serviceAddress: String? = null) : CoroutineVerticle(),
+abstract class AbstractBehaviourVerticle<T>(
+    private val eventBusAddress: EventBusAddress,
+    private val sequentialProcessing: Boolean = false
+) : CoroutineVerticle(),
     AbstractBehavior<T> {
-    private var sequentialProcessing: Boolean = false
     private val mailbox: MutableList<Message<T>> by lazy { mutableListOf() }
     lateinit var actorRef: ActorRef
         private set
     protected val logger: Logger = getLogger(javaClass)
     final override lateinit var behavior: Behavior<T>
         private set
-
-    protected lateinit var eventBusAddress: String
 
     abstract suspend fun registerMessageCodecs()
     abstract suspend fun doAfterStart()
@@ -25,14 +26,12 @@ abstract class AbstractBehaviourVerticle<T>(private val serviceAddress: String? 
     final override suspend fun start() {
         logger.info("starting {}", javaClass.simpleName)
         registerMessageCodecs()
-        eventBusAddress = serviceAddress ?: config.getString(EVENTBUS_ADDRESS_CFG_KEY, "eventBus://${javaClass.name}")
         actorRef = ActorRef(eventBusAddress)
-        sequentialProcessing = config.getBoolean("sequentialProcessing", false)
         logger.info("config[\"eventBusAddress\"]     : {}", eventBusAddress)
         logger.info("config[\"sequentialProcessing\"]: {}", sequentialProcessing)
 
         behavior = createReceive()
-        vertx.eventBus().consumer<T>(eventBusAddress).handler { msg ->
+        vertx.eventBus().consumer<T>(eventBusAddress.address).handler { msg ->
             try {
                 receiveMessage(msg)
             } catch (t: Throwable) {
