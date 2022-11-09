@@ -13,8 +13,6 @@ abstract class AbstractBehaviourVerticle<T>(
 ) : CoroutineVerticle(),
     AbstractBehavior<T> {
     private val mailbox: MutableList<Message<T>> by lazy { mutableListOf() }
-    lateinit var actorRef: ActorRef
-        private set
     protected val logger: Logger = getLogger(javaClass)
     final override lateinit var behavior: Behavior<T>
         private set
@@ -26,7 +24,6 @@ abstract class AbstractBehaviourVerticle<T>(
     final override suspend fun start() {
         logger.info("starting {}", javaClass.simpleName)
         registerMessageCodecs()
-        actorRef = ActorRef(eventBusAddress)
         logger.info("config[\"eventBusAddress\"]     : {}", eventBusAddress)
         logger.info("config[\"sequentialProcessing\"]: {}", sequentialProcessing)
 
