@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.jackson.databind)
     implementation(libs.bundles.vertx.kotlin)
     implementation(libs.bundles.vertx.config)
+    implementation(libs.arrow.core)
 
     testImplementation(libs.jackson.module.kotlin)
     testImplementation(libs.junit.jupiter)

@@ -1,5 +1,6 @@
 package de.macnix.util.keyvaluestore.vertx
 
+import arrow.core.some
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import de.macnix.util.vertx.vertxactor.verticle.AbstractBehaviourVerticle
 import de.macnix.util.vertx.vertxactor.verticle.Behavior
@@ -11,7 +12,7 @@ import io.vertx.kotlin.coroutines.await
 import kotlinx.coroutines.launch
 
 class KeyValueStoreServerVerticle(private val storePath: String, eventBusAddress: EventBusAddress) :
-    AbstractBehaviourVerticle<JsonObject>(eventBusAddress) {
+    AbstractBehaviourVerticle<JsonObject>(eventBusAddress.some()) {
     private var store = JsonObject()
     private lateinit var fs: FileSystem
 

@@ -1,5 +1,7 @@
 package de.macnix.util.vertx.vertxactor.verticle
 
+import arrow.core.Option
+import arrow.core.some
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
@@ -17,7 +19,7 @@ import org.junit.jupiter.api.TestInstance
 class AbstractBehaviorVerticleTests {
     lateinit var vertx: Vertx
     lateinit var eventBus: EventBus
-    val eventBusAddress = EventBusAddress("test.address")
+    val eventBusAddress = EventBusAddress("test.address").some()
 
     @BeforeEach
     fun launchVertx() {
@@ -30,14 +32,15 @@ class AbstractBehaviorVerticleTests {
         runBlocking(vertx.dispatcher()) {
             val replies = mutableListOf<String>()
             vertx.deployVerticle(AsyncVerticle(eventBusAddress, false)).await()
-            val msg1 =
-                eventBus.request<String>(eventBusAddress.address, "first").onSuccess { msg -> replies.add(msg.body()) }
-            val msg2 =
-                eventBus.request<String>(eventBusAddress.address, "second").onSuccess { msg -> replies.add(msg.body()) }
+            eventBusAddress.tap {
+                val msg1 =
+                    eventBus.request<String>(it.address, "first").onSuccess { msg -> replies.add(msg.body()) }
+                val msg2 =
+                    eventBus.request<String>(it.address, "second").onSuccess { msg -> replies.add(msg.body()) }
 
-            msg1.await()
-            msg2.await()
-
+                msg1.await()
+                msg2.await()
+            }
             assertThat(replies).containsExactly("second", "first")
         }
     }
@@ -47,13 +50,15 @@ class AbstractBehaviorVerticleTests {
         runBlocking(vertx.dispatcher()) {
             val replies = mutableListOf<String>()
             vertx.deployVerticle(AsyncVerticle(eventBusAddress, true)).await()
-            val msg1 =
-                eventBus.request<String>(eventBusAddress.address, "first").onSuccess { msg -> replies.add(msg.body()) }
-            val msg2 =
-                eventBus.request<String>(eventBusAddress.address, "second").onSuccess { msg -> replies.add(msg.body()) }
+            eventBusAddress.tap {
+                val msg1 =
+                    eventBus.request<String>(it.address, "first").onSuccess { msg -> replies.add(msg.body()) }
+                val msg2 =
+                    eventBus.request<String>(it.address, "second").onSuccess { msg -> replies.add(msg.body()) }
 
-            msg1.await()
-            msg2.await()
+                msg1.await()
+                msg2.await()
+            }
 
             assertThat(replies).containsExactly("first", "second")
         }
@@ -66,7 +71,7 @@ class AbstractBehaviorVerticleTests {
 }
 
 
-class AsyncVerticle(eventBusAddress: EventBusAddress, sequentialProcessing: Boolean) :
+class AsyncVerticle(eventBusAddress: Option<EventBusAddress>, sequentialProcessing: Boolean) :
     AbstractBehaviourVerticle<String>(eventBusAddress, sequentialProcessing) {
     override fun createReceive(): Behavior<String> {
         return ReceiveBuilder.buildReceive { msg, thisBehavior ->
