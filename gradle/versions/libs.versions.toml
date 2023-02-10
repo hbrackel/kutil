@@ -93,16 +93,7 @@ reactor-coroutines = ["reactor-core", "reactor-coroutines", "kotlin-reactor"]
 
 
 [plugins]
-
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "johnrengelman-shadow" }
 kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin-lang" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-lang" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-lang" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-lang" }
-spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-nebula-os = { id = "nebula.ospackage", version = "8.5.6" }
-kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin-lang" }
-vaadin = { id = "com.vaadin", version.ref = "vaadin-plugin" }
-micronaut-application = { id = "io.micronaut.application", version.ref = "micronaut-application" }
-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.43.0" }
