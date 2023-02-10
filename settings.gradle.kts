@@ -1,7 +1,3 @@
-rootProject.name = "kutil"
-
-include("key-value-store-grpc")
-
 pluginManagement {
     repositories {
         maven {
@@ -31,4 +27,6 @@ dependencyResolutionManagement {
         }
     }
 }
+
+rootProject.name = "kutil"
 
