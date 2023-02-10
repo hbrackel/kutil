@@ -20,11 +20,11 @@ dependencyResolutionManagement {
     }
 
     repositories {
-        mavenCentral()
         maven {
             url = uri("${System.getenv("REPO_LIBS_RELEASE") ?: extra["libsReleaseRepoDefaultUrl"] ?: ""}")
             isAllowInsecureProtocol = true
         }
+        mavenCentral()
     }
 }
 
