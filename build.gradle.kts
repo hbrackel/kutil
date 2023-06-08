@@ -1,4 +1,3 @@
-import org.gradle.api.JavaVersion.VERSION_11
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -22,11 +21,12 @@ dependencies {
     testImplementation(libs.awaitility.kotlin)
 
 }
-java {
-    sourceCompatibility = VERSION_11
-    targetCompatibility = VERSION_11
-}
 
+kotlin {
+    jvmToolchain {
+        this.languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
 tasks.withType<KotlinCompile>().all {
     kotlinOptions {
         jvmTarget = "11"
