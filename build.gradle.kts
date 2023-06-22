@@ -24,12 +24,11 @@ dependencies {
 
 kotlin {
     jvmToolchain {
-        this.languageVersion.set(JavaLanguageVersion.of(11))
+        this.languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 tasks.withType<KotlinCompile>().all {
     kotlinOptions {
-        jvmTarget = "11"
     }
 }
 tasks.withType<Test> {
