@@ -51,6 +51,10 @@ allprojects {
         }
     }
 
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
     afterEvaluate {
 
         kotlin {
@@ -58,12 +62,6 @@ allprojects {
                 this.languageVersion.set(JavaLanguageVersion.of(17))
             }
         }
-
-        tasks.withType<Test> {
-            useJUnitPlatform()
-        }
-
-
     }
 
 }
