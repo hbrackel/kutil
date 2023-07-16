@@ -6,7 +6,67 @@ plugins {
     alias(macnix.plugins.gitver)
 }
 
-group = "de.macnix.util"
+
+allprojects {
+    group = "de.macnix.util"
+    version = rootProject.version
+
+    apply<JavaPlugin>()
+    apply<MavenPublishPlugin>()
+
+    publishing {
+        repositories {
+            maven {
+                name = "libsReleaseLocal"
+                url =
+                    uri("${System.getenv("REPO_LIBS_RELEASE_LOCAL") ?: extra["libsReleaseLocalRepoDefaultUrl"] ?: ""}")
+                isAllowInsecureProtocol = true
+
+                credentials {
+                    username = (System.getenv("MAVEN_DEPLOY_USR") ?: extra["mavenDeployUser"]) as String
+                    password = (System.getenv("MAVEN_DEPLOY_PSW") ?: extra["mavenDeployPassword"]) as String
+                }
+            }
+        }
+
+        publications {
+            create<MavenPublication>("mavenJava") {
+                from(components["java"])
+                pom {
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("hbrackel")
+                            name.set("Hans-Uwe Brackel")
+                            email.set("hbrackel@googlemail.com")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    afterEvaluate {
+
+        kotlin {
+            jvmToolchain {
+                this.languageVersion.set(JavaLanguageVersion.of(17))
+            }
+        }
+
+        tasks.withType<Test> {
+            useJUnitPlatform()
+        }
+
+
+    }
+
+}
 
 dependencies {
     implementation(libs.slf4j.api)
@@ -22,52 +82,7 @@ dependencies {
 
 }
 
-kotlin {
-    jvmToolchain {
-        this.languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
 tasks.withType<KotlinCompile>().all {
     kotlinOptions {
-    }
-}
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "libsReleaseLocal"
-            url =
-                uri("${System.getenv("REPO_LIBS_RELEASE_LOCAL") ?: extra["libsReleaseLocalRepoDefaultUrl"] ?: ""}")
-            isAllowInsecureProtocol = true
-
-            credentials {
-                username = (System.getenv("MAVEN_DEPLOY_USR") ?: extra["mavenDeployUser"]) as String
-                password = (System.getenv("MAVEN_DEPLOY_PSW") ?: extra["mavenDeployPassword"]) as String
-            }
-        }
-    }
-
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-            pom {
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("hbrackel")
-                        name.set("Hans-Uwe Brackel")
-                        email.set("hbrackel@googlemail.com")
-                    }
-                }
-            }
-        }
     }
 }
