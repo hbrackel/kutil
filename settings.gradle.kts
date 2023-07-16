@@ -28,4 +28,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "kutil"
-
+include("kutil-coroutines")
