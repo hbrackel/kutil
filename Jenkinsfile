@@ -51,7 +51,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        gradlew('publishAllPublicationsToExternalRepository')
+        gradlew('publish')
       }
     }
   }
