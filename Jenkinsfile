@@ -1,92 +1,52 @@
 pipeline {
-    agent none
-
-    options {
-        skipDefaultCheckout()
-        disableConcurrentBuilds()
+    agent {
+        label 'jdk17'
     }
     environment {
-      MAVEN_DEPLOY = credentials('MAVEN_DEPLOY_USER')
+        MAVEN_DEPLOY = credentials('maven-deploy-user')
     }
-
   stages {
-    stage('Checkout') {
-        agent any
-        steps {
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'project']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/util/kutil.git']]])
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gradle-build-scripts']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SCM_USER', url: 'http://git:3000/cicd/gradle-build-scripts.git']]])
-            stash(name: 'ws', includes: 'project/**, gradle-build-files/**', excludes: '**/.git/**')
-        }
-    }
     stage('Compile & UnitTest') {
-        agent {label 'jdk8' }
         steps {
-            unstash 'ws'
             gradlew("clean build")
-            stash(name: 'build', includes: 'project/build/**')
+            stash(name: 'build', includes: 'build/**')
          }
         post {
-            success {
-                archiveArtifacts artifacts: 'project/build/libs/**/*.jar,project/build/libs/**/*.txt', fingerprint: true
-                junit testResults: 'project/build/reports/**/*.xml', allowEmptyResults: true
-            }
-        }
-    }
-    stage('Publish to downstream') {
-        agent {label 'jdk8' }
-        steps {
-            unstash 'ws'
-            unstash 'build'
-            gradlew("PublishAllPublicationsToDownstreamRepository")
-            stash(name: 'build', includes: 'project/build/**')
-        }
-        post {
-            success {
-                zip zipFile: 'project/build/downstream_repo.zip', archive: true, dir: 'project/build/repo'
+            always {
+                junit allowEmptyResults: true, testResults: 'build/test-results/**/*.xml'
             }
         }
     }
 
-    stage('Integration Tests') {
-      steps {
-        echo 'no integration tests defined'
-      }
-    }
+    stage('Validation') {
+        parallel {
+            stage('Integration Tests') {
+                steps {
+                    echo 'no Integration Tests defined'
+                }
+            }
 
-    stage('Code Analysis') {
-      steps {
-        echo 'Code Analysis'
-        //sh './gradlew sonarqube -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.host.url=${SONARQUBE_URL}'
-      }
-    }
+            stage('User Acceptance Tests') {
+                steps {
+                    echo 'no UAT defined'
+                }
+            }
 
+            stage('Static Application security Testing (SAST)') {
+                steps {
+                    echo 'no SAST defined'
+                }
+            }
 
-    stage('Functional Tests & Performance Tests') {
-      parallel {
-        stage('FunctionalTests') {
-          agent none
-          steps {
-            echo 'no functional tests defined'
-          }
-        }
-        stage('Performance & Stress Tests') {
-          agent none
-          steps {
-            echo 'no performance or stress tests defined'
-          }
-        }
-      }
-    }
-
-
-    stage('User Acceptance Tests') {
-        steps {
-            echo 'no UAT defined'
+            stage('License & Vulnerability Scanning') {
+                steps {
+                    echo 'no License & Vulnerability Scanning defined'
+                }
+            }
         }
     }
 
     stage('Publish Library') {
-      agent {label 'jdk8' }
       when {
         branch 'master'
       }
@@ -95,8 +55,16 @@ pipeline {
       }
     }
   }
+  post {
+      always {
+          junit 'build/test-results/**/*.xml'
+      }
+      success {
+          archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+      }
+  }
 }
 
 def gradlew(String commands) {
-    sh "cd project && ./gradlew --no-daemon --console=plain --refresh-dependencies ${commands}"
+    sh "./gradlew --no-daemon --console=plain --refresh-dependencies ${commands}"
 }
