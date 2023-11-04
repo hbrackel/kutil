@@ -56,11 +56,8 @@ pipeline {
     }
   }
   post {
-      always {
-          junit 'build/test-results/**/*.xml'
-      }
       success {
-          archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+          archiveArtifacts artifacts: '**/build/libs/**/*.jar', fingerprint: true
       }
   }
 }
