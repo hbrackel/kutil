@@ -9,11 +9,11 @@ pipeline {
     stage('Compile & UnitTest') {
         steps {
             gradlew("clean build")
-            stash(name: 'build', includes: 'build/**')
+            stash(name: 'build', includes: '**/build/**')
          }
         post {
             always {
-                junit allowEmptyResults: true, testResults: 'build/test-results/**/*.xml'
+                junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
             }
         }
     }
