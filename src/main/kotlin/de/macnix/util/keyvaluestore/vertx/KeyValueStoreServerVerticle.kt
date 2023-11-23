@@ -1,5 +1,6 @@
 package de.macnix.util.keyvaluestore.vertx
 
+import arrow.core.Either.Companion.catch
 import arrow.core.some
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import de.macnix.util.vertx.vertxactor.verticle.AbstractBehaviourVerticle
@@ -9,7 +10,10 @@ import io.vertx.core.eventbus.Message
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.await
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class KeyValueStoreServerVerticle(private val storePath: String, eventBusAddress: EventBusAddress) :
     AbstractBehaviourVerticle<JsonObject>(eventBusAddress.some()) {
@@ -28,9 +32,13 @@ class KeyValueStoreServerVerticle(private val storePath: String, eventBusAddress
 
     private suspend fun createStoreFileIfNotExists() {
         try {
-            if (!fs.exists(storePath).await()) {
-                logger.info("creating new store file at {}", storePath)
-                flushStore()
+            withContext(Dispatchers.IO) {
+                val storeFile = File(storePath)
+                if (!storeFile.exists()) {
+                    logger.info("creating new store file at {}", storePath)
+                    catch { storeFile.parentFile?.mkdirs() }
+                    flushStore()
+                }
             }
         } catch (e: Exception) {
             logger.error("Failed to create store file at {} => {}", storePath, e.message)
