@@ -1,8 +1,8 @@
 package de.macnix.kutil.coroutines.timeout
 
-import io.kotest.assertions.arrow.core.shouldBeLeft
-import io.kotest.assertions.arrow.core.shouldBeRight
+import de.macnix.util.function.Either
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
@@ -20,7 +20,7 @@ class TimeoutSpec : DescribeSpec({
                 functionReturningAnInt1After3000MillisDelay.invoke()
             }
             println("Result: $result")
-            result shouldBeLeft TimeoutError("Timed out waiting for ${timeout.inWholeMilliseconds} ms")
+            result shouldBe Either.Left(TimeoutError("Timed out waiting for ${timeout.inWholeMilliseconds} ms"))
         }
 
         it("returns Either.Right(Int<1>) if the task completes within the timeout period") {
@@ -29,7 +29,7 @@ class TimeoutSpec : DescribeSpec({
                 functionReturningAnInt1After3000MillisDelay.invoke()
             }
 
-            result shouldBeRight 1
+            result shouldBe Either.Right(1)
         }
 
     }

@@ -1,8 +1,8 @@
 package de.macnix.kutil.coroutines.timeout
 
-import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
+import de.macnix.util.function.Either
+import de.macnix.util.function.left
+import de.macnix.util.function.right
 import kotlinx.coroutines.withTimeout
 import kotlin.time.Duration
 

@@ -5,7 +5,7 @@ import de.macnix.util.file.readString
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import io.vertx.core.Vertx
 import io.vertx.kotlin.core.json.jsonObjectOf
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.data.Offset
@@ -555,13 +555,13 @@ class VertxKeyValueStoreTest {
     suspend fun deployVerticle(storePath: String? = null) {
         deploymentId =
             vertx.deployVerticle(
-                KeyValueStoreServerVerticle(storePath?:"", eventBusAddress)
-            ).await()
+                KeyValueStoreServerVerticle(storePath ?: "", eventBusAddress)
+            ).coAwait()
         kvsClient = KeyValueStoreClient(vertx, eventBusAddress)
     }
 
     suspend fun undeployVerticle() {
-        vertx.undeploy(deploymentId).await()
+        vertx.undeploy(deploymentId).coAwait()
     }
 
 }

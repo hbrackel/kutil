@@ -8,7 +8,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get
 import io.vertx.kotlin.core.json.jsonObjectOf
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import org.slf4j.LoggerFactory
 
 class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAddress) : KeyValueStore {
@@ -26,7 +26,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getString(VALUE_KEY)
+            ).coAwait().body()?.getString(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getString(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -42,7 +42,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putString(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -57,7 +57,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putInteger(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -70,7 +70,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getNumber(VALUE_KEY)?.toInt()
+            ).coAwait().body()?.getNumber(VALUE_KEY)?.toInt()
         } catch (e: Exception) {
             logger.warn("Failed to getInteger(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -86,7 +86,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putFloat(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -99,7 +99,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getNumber(VALUE_KEY)?.toFloat()
+            ).coAwait().body()?.getNumber(VALUE_KEY)?.toFloat()
         } catch (e: Exception) {
             logger.warn("Failed to getFloat(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -115,7 +115,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putDouble(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -128,7 +128,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getNumber(VALUE_KEY)?.toDouble()
+            ).coAwait().body()?.getNumber(VALUE_KEY)?.toDouble()
         } catch (e: Exception) {
             logger.warn("Failed to getDouble(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -144,7 +144,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putLong(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -158,7 +158,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getNumber(VALUE_KEY)?.toLong()
+            ).coAwait().body()?.getNumber(VALUE_KEY)?.toLong()
         } catch (e: Exception) {
             logger.warn("Failed to getLong(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -174,7 +174,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putShort(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -188,7 +188,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getNumber(VALUE_KEY)?.toShort()
+            ).coAwait().body()?.getNumber(VALUE_KEY)?.toShort()
         } catch (e: Exception) {
             logger.warn("Failed to getShort(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -204,7 +204,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putByte(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -218,7 +218,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getNumber(VALUE_KEY)?.toByte()
+            ).coAwait().body()?.getNumber(VALUE_KEY)?.toByte()
         } catch (e: Exception) {
             logger.warn("Failed to getByte(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -234,7 +234,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putBoolean(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -248,7 +248,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getBoolean(VALUE_KEY)
+            ).coAwait().body()?.getBoolean(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getBoolean(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -264,7 +264,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putJsonObject(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -278,7 +278,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getJsonObject(VALUE_KEY)
+            ).coAwait().body()?.getJsonObject(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getJsonObject(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -294,7 +294,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                         VALUE_KEY to value, "className" to value.javaClass.name
                     )
                 )
-            ).await()
+            ).coAwait()
         } catch (e: Exception) {
             logger.warn("Failed to putJsonArray(key: '{}', value: '{}') => {}", key, value, e.message)
         }
@@ -308,7 +308,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()?.getJsonArray(VALUE_KEY)
+            ).coAwait().body()?.getJsonArray(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to getJsonArray(key: '{}', default: '{}') => {}", key, default, e.message)
             null
@@ -322,7 +322,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "remove", "key" to key
                 )
-            ).await().body()?.get<Any?>(VALUE_KEY)
+            ).coAwait().body()?.get<Any?>(VALUE_KEY)
         } catch (e: Exception) {
             logger.warn("Failed to remove(key: '{}') => {}", key, e.message)
             null
@@ -336,7 +336,7 @@ class KeyValueStoreClient(vertx: Vertx, private val eventBusAddress: EventBusAdd
                 eventBusAddress.address, jsonObjectOf(
                     "action" to "get", "key" to key
                 )
-            ).await().body()
+            ).coAwait().body()
             if (storeValue != null) {
                 when (storeValue.getString("className")) {
                     java.lang.Double::class.java.name, Double::class.java.name -> storeValue.getDouble(VALUE_KEY)

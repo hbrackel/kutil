@@ -1,11 +1,12 @@
 package de.macnix.util.vertx.vertxactor.verticle
 
-import arrow.core.Option
-import arrow.core.some
+import de.macnix.util.function.Option
+import de.macnix.util.function.onSome
+import de.macnix.util.function.some
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -31,15 +32,15 @@ class AbstractBehaviorVerticleTests {
     fun `an AbstractBehaviorVerticle  with 'sequentialProcessing = false' does not reply in the order of incoming messages, when the handler suspends`() {
         runBlocking(vertx.dispatcher()) {
             val replies = mutableListOf<String>()
-            vertx.deployVerticle(AsyncVerticle(eventBusAddress, false)).await()
-            eventBusAddress.tap {
+            vertx.deployVerticle(AsyncVerticle(eventBusAddress, false)).coAwait()
+            eventBusAddress.onSome {
                 val msg1 =
                     eventBus.request<String>(it.address, "first").onSuccess { msg -> replies.add(msg.body()) }
                 val msg2 =
                     eventBus.request<String>(it.address, "second").onSuccess { msg -> replies.add(msg.body()) }
 
-                msg1.await()
-                msg2.await()
+                msg1.coAwait()
+                msg2.coAwait()
             }
             assertThat(replies).containsExactly("second", "first")
         }
@@ -49,15 +50,15 @@ class AbstractBehaviorVerticleTests {
     fun `an AbstractBehaviorVerticle with 'sequentialProcessing = true' does reply in the order of incoming messages, when the handler suspends`() {
         runBlocking(vertx.dispatcher()) {
             val replies = mutableListOf<String>()
-            vertx.deployVerticle(AsyncVerticle(eventBusAddress, true)).await()
-            eventBusAddress.tap {
+            vertx.deployVerticle(AsyncVerticle(eventBusAddress, true)).coAwait()
+            eventBusAddress.onSome {
                 val msg1 =
                     eventBus.request<String>(it.address, "first").onSuccess { msg -> replies.add(msg.body()) }
                 val msg2 =
                     eventBus.request<String>(it.address, "second").onSuccess { msg -> replies.add(msg.body()) }
 
-                msg1.await()
-                msg2.await()
+                msg1.coAwait()
+                msg2.coAwait()
             }
 
             assertThat(replies).containsExactly("first", "second")

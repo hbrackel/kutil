@@ -1,7 +1,7 @@
 package de.macnix.util.keyvaluestore.vertx
 
-import arrow.core.Either.Companion.catch
-import arrow.core.some
+import de.macnix.util.function.catch
+import de.macnix.util.function.some
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import de.macnix.util.vertx.vertxactor.verticle.AbstractBehaviourVerticle
 import de.macnix.util.vertx.vertxactor.verticle.Behavior
@@ -9,7 +9,7 @@ import de.macnix.util.vertx.vertxactor.verticle.ReceiveBuilder
 import io.vertx.core.eventbus.Message
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,7 +49,7 @@ class KeyValueStoreServerVerticle(private val storePath: String, eventBusAddress
     private suspend fun initializeStoreFromStoreFile() {
         logger.info("initializing store from file at {}", storePath)
         store = try {
-            val buffer = fs.readFile(storePath).await()
+            val buffer = fs.readFile(storePath).coAwait()
             val jsonFromStore = JsonObject(buffer)
             jsonFromStore
         } catch (e: Exception) {
@@ -61,7 +61,7 @@ class KeyValueStoreServerVerticle(private val storePath: String, eventBusAddress
 
     private suspend fun flushStore() {
         try {
-            fs.writeFile(storePath, store.toBuffer()).await()
+            fs.writeFile(storePath, store.toBuffer()).coAwait()
             logger.debug("key-value-store successfully written to file '{}'", storePath)
         } catch (t: Throwable) {
             logger.error(

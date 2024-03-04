@@ -1,9 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     `maven-publish`
-    alias(macnix.plugins.gitver)
+    alias(libs.plugins.gitversionproperties)
 }
 
 
@@ -55,23 +53,14 @@ allprojects {
         useJUnitPlatform()
     }
 
-    afterEvaluate {
-
-        kotlin {
-            jvmToolchain {
-                this.languageVersion.set(JavaLanguageVersion.of(17))
-            }
-        }
-    }
-
 }
 
 dependencies {
+    implementation(project("kutil-function"))
     implementation(libs.slf4j.api)
     implementation(libs.jackson.databind)
     implementation(libs.bundles.vertx.kotlin)
     implementation(libs.bundles.vertx.config)
-    implementation(libs.arrow.core)
 
     testImplementation(libs.jackson.module.kotlin)
     testImplementation(libs.junit.jupiter)
@@ -80,7 +69,3 @@ dependencies {
 
 }
 
-tasks.withType<KotlinCompile>().all {
-    kotlinOptions {
-    }
-}

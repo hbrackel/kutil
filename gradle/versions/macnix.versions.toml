@@ -1,4 +1,0 @@
-[versions]
-
-[plugins]
-gitver = { id = "de.macnix.gitversion", version = "2.0.1" }

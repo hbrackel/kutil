@@ -1,42 +1,33 @@
 [versions]
 apache-commons-csv = "1.9.0"
 apache-commons-codec = "1.15"
-assertj-core = "3.24.2"
+assertj-core = "3.25.3"
 awaitility-kotlin = "4.2.0"
-arrow = "1.2.0"
 bouncycastle-bcpkix = "1.71"  # update for CVE
 inject = "1"
 jackson = "2.15.2"
 johnrengelman-shadow = "7.1.2"
-junit5 = "5.9.3"
-kotlin-coroutines = "1.7.2"
+junit5 = "5.10.2"
+kotlin-coroutines = "1.8.0"
 kotlin-serialization-protocol = "1.3.3"
 
-kotest = "5.6.2"
-kotest-arrow = "1.3.3"
-kotlin-lang = "1.8.22"
+kotest = "5.8.0"
+kotlin-lang = "1.9.22"
 logback = "1.2.11"
-micronaut-application = "3.4.0"
 mockito-kotlin = "2.2.0"
 mockk = "1.12.5"
 netty = "4.1.79.Final"
 reactor-core = "3.4.22"
 reactor-coroutines = "1.1.7"
-slf4j = "2.0.7"
+slf4j = "2.0.12"
 spek2 = "2.0.18"
-vertx = "4.4.3"
+vertx = "4.5.4"
 spring-version = "5.3.22"
-spring-boot = "2.7.3"
-spring-dependency-management = "1.0.13.RELEASE"
 
-vaadin = "14.8.14"
-vaadin-plugin = "0.14.8.1"
 
 [libraries]
 apache-commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "apache-commons-csv" }
 apache-commons-codec = { module = "commons-codec:commons-codec", version.ref = "apache-commons-codec" }
-arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
-arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj-core" }
 awaitility-kotlin = { module = "org.awaitility:awaitility-kotlin", version.ref = "awaitility-kotlin" }
 bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle-bcpkix" }
@@ -46,7 +37,6 @@ logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback"
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 kotest-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-kotest-assertions-arrow = { module = "io.kotest.extensions:kotest-assertions-arrow", version.ref = "kotest-arrow" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-lang" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization-protocol" }
 kotlin-serialization-hocon = { module = "org.jetbrains.kotlinx:kotlinx-serialization-hocon", version.ref = "kotlin-serialization-protocol" }
@@ -62,15 +52,6 @@ reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "react
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 spek2-dsl = { module = "org.spekframework.spek2:spek-dsl-jvm", version.ref = "spek2" }
 spek2-runner = { module = "org.spekframework.spek2:spek-runner-junit5", version.ref = "spek2" }
-spring-boot-starter-base = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
-spring-boot-starter-log4j2 = { module = "org.springframework.boot:spring-boot-starter-log4j2", version.ref = "spring-boot" }
-spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "spring-boot" }
-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
-spring-context = { module = "org.springframework:spring-context", version.ref = "spring-version" }
-spring-core = { module = "org.springframework:spring-core", version.ref = "spring-version" }
-spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
-vaadin-base = { module = "com.vaadin:vaadin", version.ref = "vaadin" }
-vaadin-springboot-starter = { module = "com.vaadin:vaadin-spring-boot-starter", version.ref = "vaadin" }
 vertx-core = { module = "io.vertx:vertx-core", version.ref = "vertx" }
 vertx-web-base = { module = "io.vertx:vertx-web", version.ref = "vertx" }
 vertx-web-client = { module = "io.vertx:vertx-web-client", version.ref = "vertx" }
@@ -90,7 +71,6 @@ jackson-module-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jack
 kotest = ["kotest-junit5", "kotest-assertions-core"]
 vertx-kotlin = ["vertx-core", "vertx-kotlin-lang", "vertx-kotlin-coroutines"]
 vertx-config = ["vertx-config-core", "vertx-config-yaml", "vertx-config-hocon"]
-springdi = ["javax-inject", "spring-context", "spring-core", "spring-boot-autoconfigure"]
 reactor-coroutines = ["reactor-core", "reactor-coroutines", "kotlin-reactor"]
 
 
@@ -99,3 +79,4 @@ kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "ko
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-lang" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-lang" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-lang" }
+gitversionproperties = { id = "de.macnix.gradle.git-version-properties", version = "1.2.0" }
