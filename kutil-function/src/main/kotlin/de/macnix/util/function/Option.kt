@@ -4,12 +4,32 @@ sealed class Option<out A> {
     fun isSome(): Boolean = this is Some
     fun isNone(): Boolean = this is None
 
-    data class Some<A>(val value: A) : Option<A>()
+    data class Some<A>(val value: A) : Option<A>() {
+        override fun toString(): String = "Option.Some($value)"
+    }
 
-    object None : Option<Nothing>()
+    object None : Option<Nothing>() {
+        override fun toString(): String = "Option.None"
+    }
 
     fun <A> identity(a: A): A = a
 
+    companion object {
+        fun <A> fromNullable(value: A?): Option<A> {
+            return when (value) {
+                null -> None
+                else -> Some(value)
+            }
+        }
+    }
+
+}
+
+inline fun <A> Option<A>.getOrElse(f: () -> A): A {
+    return when (this) {
+        is Option.None -> f()
+        is Option.Some -> value
+    }
 }
 
 inline fun <A> Option<A>.onSome(f: (a: A) -> Any?): Option<A> {
