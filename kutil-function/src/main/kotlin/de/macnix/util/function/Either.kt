@@ -4,9 +4,13 @@ sealed class Either<out A, out B> {
     fun isRight(): Boolean = this@Either is Right
     fun isLeft(): Boolean = this@Either is Left
 
-    data class Left<A>(val left: A) : Either<A, Nothing>()
+    data class Left<A>(val left: A) : Either<A, Nothing>() {
+        override fun toString(): String = "Either.Left($left)"
+    }
 
-    data class Right<B>(val right: B) : Either<Nothing, B>()
+    data class Right<B>(val right: B) : Either<Nothing, B>() {
+        override fun toString(): String = "Either.Right($right)"
+    }
 
     fun <A> identity(a: A): A = a
 
