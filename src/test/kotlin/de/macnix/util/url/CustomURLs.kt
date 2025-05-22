@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Hans-Uwe Brackel
+ * Copyright (c) 2025 Hans-Uwe Brackel
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -31,10 +31,10 @@ class CustomURLs {
     fun createSslURL() {
         val sshUrl = URI("ssh", null, "127.0.0.1", 123, "/myFile", null, null).toURL()
         assertAll("URL creation",
-                Executable { assertEquals("ssh", sshUrl.protocol) },
-                Executable { assertEquals("127.0.0.1", sshUrl.host) },
-                Executable { assertEquals(123, sshUrl.port) },
-                Executable { assertEquals("/myFile", sshUrl.file) }
+            Executable { assertEquals("ssh", sshUrl.protocol) },
+            Executable { assertEquals("127.0.0.1", sshUrl.host) },
+            Executable { assertEquals(123, sshUrl.port) },
+            Executable { assertEquals("/myFile", sshUrl.file) }
         )
     }
 
@@ -43,10 +43,10 @@ class CustomURLs {
         val opcTcpUrlSpec = "opc.tcp://localhost:4880/AGS"
         val url = URI.create(opcTcpUrlSpec).toURL()
         assertAll("URL creation",
-                Executable { assertEquals("opc.tcp", url.protocol) },
-                Executable { assertEquals("localhost", url.host) },
-                Executable { assertEquals(4880, url.port) },
-                Executable { assertEquals("/AGS", url.file) }
+            Executable { assertEquals("opc.tcp", url.protocol) },
+            Executable { assertEquals("localhost", url.host) },
+            Executable { assertEquals(4880, url.port) },
+            Executable { assertEquals("/AGS", url.file) }
         )
     }
 
@@ -54,7 +54,7 @@ class CustomURLs {
     fun cannotUseBracketsInPlaceholderForHost() {
         val specWithPlaceholder = "opc.tcp://[host]:4880"
 
-        val ex = assertThrows(IllegalArgumentException::class.java, { URI.create(specWithPlaceholder).toURL() })
+        val ex = assertThrows(IllegalArgumentException::class.java) { URI.create(specWithPlaceholder).toURL() }
         assertEquals("Malformed IPv6 address at index 11: opc.tcp://[host]:4880", ex.message)
     }
 

@@ -30,7 +30,7 @@ class VertxKeyValueStoreTest {
         }
 
         @AfterEach
-        fun AfterEach() {
+        fun afterEach() {
             runBlocking { undeployVerticle() }
         }
 
@@ -494,13 +494,13 @@ class VertxKeyValueStoreTest {
     @Nested
     @DisplayName("a persisted KeyValueStore")
     inner class PersistedKeyValueStore {
-        val getTempPath = {
+        private val getTempPath = {
             UUID.randomUUID().toString() + "-store"
         }
 
         @Test
         fun `should create a store file at the given path if none exists`() {
-            val path = getTempPath()
+            val path = getTempPath.invoke()
             val storeFile = File(path)
 
             // given
@@ -519,7 +519,7 @@ class VertxKeyValueStoreTest {
 
         @Test
         fun `should initialize the store from file at the given path if it exists`() {
-            val path = getTempPath()
+            val path = getTempPath.invoke()
             val storeFile = File(path)
 
             // given - the file has been created and has some content
