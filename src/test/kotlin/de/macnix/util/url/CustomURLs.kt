@@ -19,8 +19,7 @@ package de.macnix.util.url
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
-import java.net.MalformedURLException
-import java.net.URL
+import java.net.URI
 
 
 class CustomURLs {
@@ -30,7 +29,7 @@ class CustomURLs {
 
     @Test
     fun createSslURL() {
-        val sshUrl = URL("ssh", "127.0.0.1", 123, "/myFile")
+        val sshUrl = URI("ssh", null, "127.0.0.1", 123, "/myFile", null, null).toURL()
         assertAll("URL creation",
                 Executable { assertEquals("ssh", sshUrl.protocol) },
                 Executable { assertEquals("127.0.0.1", sshUrl.host) },
@@ -42,7 +41,7 @@ class CustomURLs {
     @Test
     fun createOpcTcpURL() {
         val opcTcpUrlSpec = "opc.tcp://localhost:4880/AGS"
-        val url = URL(opcTcpUrlSpec)
+        val url = URI.create(opcTcpUrlSpec).toURL()
         assertAll("URL creation",
                 Executable { assertEquals("opc.tcp", url.protocol) },
                 Executable { assertEquals("localhost", url.host) },
@@ -55,8 +54,8 @@ class CustomURLs {
     fun cannotUseBracketsInPlaceholderForHost() {
         val specWithPlaceholder = "opc.tcp://[host]:4880"
 
-        val ex: MalformedURLException = assertThrows(MalformedURLException::class.java, { URL(specWithPlaceholder) })
-        assertEquals("Invalid host: [host]", ex.message)
+        val ex = assertThrows(IllegalArgumentException::class.java, { URI.create(specWithPlaceholder).toURL() })
+        assertEquals("Malformed IPv6 address at index 11: opc.tcp://[host]:4880", ex.message)
     }
 
 }

@@ -1,7 +1,6 @@
 package de.macnix.util.keyvaluestore.vertx
 
 
-import de.macnix.util.file.readString
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import io.vertx.core.Vertx
 import io.vertx.kotlin.core.json.jsonObjectOf
@@ -530,7 +529,6 @@ class VertxKeyValueStoreTest {
                 undeployVerticle()
             }
             assertThat(storeFile).exists()
-            val fileContent = storeFile.readString()
 
             // when
             runBlocking { deployVerticle(path) }

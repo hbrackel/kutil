@@ -18,8 +18,8 @@ package de.macnix.util
 
 import java.io.File
 import java.net.MalformedURLException
+import java.net.URI
 import java.net.URISyntaxException
-import java.net.URL
 
 /**
  * copied from http://stackoverflow.com/questions/15359702/get-location-of-jar-file
@@ -63,7 +63,7 @@ fun <T : Any> Class<T>.getJarDirectory(theClass: Class<T>): File {
 
     // convert back to url
     val finalUrl = try {
-        URL(extURL)
+        URI(extURL).toURL()
     } catch (mux: MalformedURLException) {
         mux.printStackTrace()
         url
