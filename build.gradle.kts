@@ -16,7 +16,7 @@ allprojects {
         repositories {
             maven {
                 name = "libsReleaseLocal"
-                url = uri(File(rootProject.projectDir, "libsReleaseLocal"))
+                url = uri(File(rootProject.projectDir, "libs_publish_local"))
             }
         }
 

@@ -79,5 +79,5 @@ gradle-app.setting
 .gradletasknamecache
 
 .idea
-libsReleaseLocal
-!libsReleaseLocal/.gitkeep
+libs_publish_local
+!libs_publish_local/.gitkeep
