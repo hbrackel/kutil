@@ -1,6 +1,6 @@
 package de.macnix.kutil.coroutines.timeout
 
-import de.macnix.util.function.Either
+import arrow.core.Either
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.delay

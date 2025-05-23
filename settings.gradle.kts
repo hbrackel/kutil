@@ -12,5 +12,4 @@ dependencyResolutionManagement {
 rootProject.name = "kutil"
 include(
     "kutil-coroutines",
-    "kutil-function"
 )
