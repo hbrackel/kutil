@@ -16,14 +16,7 @@ allprojects {
         repositories {
             maven {
                 name = "libsReleaseLocal"
-                url =
-                    uri("${System.getenv("REPO_LIBS_RELEASE_LOCAL") ?: extra["libsReleaseLocalRepoDefaultUrl"] ?: ""}")
-                isAllowInsecureProtocol = true
-
-                credentials {
-                    username = (System.getenv("MAVEN_DEPLOY_USR") ?: extra["mavenDeployUser"]) as String
-                    password = (System.getenv("MAVEN_DEPLOY_PSW") ?: extra["mavenDeployPassword"]) as String
-                }
+                url = uri(File(rootProject.projectDir, "libsReleaseLocal"))
             }
         }
 
