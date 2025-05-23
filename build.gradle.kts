@@ -50,7 +50,7 @@ allprojects {
 
 dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation(project("kutil-function"))
+    api(libs.arrow.core)
     implementation(libs.slf4j.api)
     implementation(libs.jackson.databind)
     implementation(libs.bundles.vertx.kotlin)

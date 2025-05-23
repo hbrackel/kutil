@@ -1,8 +1,7 @@
 package de.macnix.util.vertx.vertxactor.verticle
 
-import de.macnix.util.function.Option
-import de.macnix.util.function.onSome
-import de.macnix.util.function.some
+import arrow.core.Option
+import arrow.core.some
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus

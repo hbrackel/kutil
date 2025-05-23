@@ -1,7 +1,7 @@
 package de.macnix.util.vertx.vertxactor.verticle
 
-import de.macnix.util.function.Option
-import de.macnix.util.function.onSome
+import arrow.core.Option
+import arrow.core.none
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import io.vertx.core.eventbus.Message
 import io.vertx.kotlin.coroutines.CoroutineVerticle
@@ -10,7 +10,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
 abstract class AbstractBehaviourVerticle<T>(
-    private val eventBusAddress: Option<EventBusAddress> = Option.None,
+    private val eventBusAddress: Option<EventBusAddress> = none(),
     private val sequentialProcessing: Boolean = false
 ) : CoroutineVerticle(),
     AbstractBehavior<T> {
@@ -34,7 +34,7 @@ abstract class AbstractBehaviourVerticle<T>(
             vertx.eventBus().consumer<T>(it.address).handler { msg ->
                 try {
                     receiveMessage(msg)
-                } catch (t: Throwable) {
+                } catch (_: Throwable) {
                     logger.error("received invalid message with body='{}'", msg.body())
                 }
             }

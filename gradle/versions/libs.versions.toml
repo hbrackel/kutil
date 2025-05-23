@@ -1,6 +1,7 @@
 [versions]
 apache-commons-csv = "1.9.0"
 apache-commons-codec = "1.15"
+arrow = "2.1.2"
 assertj-core = "3.27.3"
 awaitility-kotlin = "4.3.0"
 bouncycastle-bcpkix = "1.71"  # update for CVE
@@ -24,6 +25,7 @@ vertx = "5.0.0"
 
 
 [libraries]
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj-core" }
 awaitility-kotlin = { module = "org.awaitility:awaitility-kotlin", version.ref = "awaitility-kotlin" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }

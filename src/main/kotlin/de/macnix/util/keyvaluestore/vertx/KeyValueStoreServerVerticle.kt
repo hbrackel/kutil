@@ -1,7 +1,7 @@
 package de.macnix.util.keyvaluestore.vertx
 
-import de.macnix.util.function.catch
-import de.macnix.util.function.some
+import arrow.core.Either.Companion.catch
+import arrow.core.some
 import de.macnix.util.vertx.eventbus.EventBusAddress
 import de.macnix.util.vertx.vertxactor.verticle.AbstractBehaviourVerticle
 import de.macnix.util.vertx.vertxactor.verticle.Behavior
@@ -31,18 +31,18 @@ class KeyValueStoreServerVerticle(private val storePath: String, eventBusAddress
     override suspend fun registerMessageCodecs() {}
 
     private suspend fun createStoreFileIfNotExists() {
-        try {
-            withContext(Dispatchers.IO) {
-                val storeFile = File(storePath)
-                if (!storeFile.exists()) {
-                    logger.info("creating new store file at {}", storePath)
-                    catch { storeFile.parentFile?.mkdirs() }
-                    flushStore()
-                }
+        withContext(Dispatchers.IO) {
+            val storeFile = File(storePath)
+            if (!storeFile.exists()) {
+                logger.info("creating new store file at {}", storePath)
+                catch { storeFile.parentFile?.mkdirs() }
+                    .onRight { flushStore() }
+                    .onLeft {
+                        logger.error("Failed to create store file at {} => {}", storePath, it.message)
+                        throw it
+                    }
+
             }
-        } catch (e: Exception) {
-            logger.error("Failed to create store file at {} => {}", storePath, e.message)
-            throw e
         }
     }
 
